@@ -27,7 +27,38 @@
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       },
-      "serviceWorker": true
+      "serviceWorker": true,
+      "appShell": {
+        "app": "rupeez-universal",
+        "route": "shell"
+      }
+    },
+    {
+      "root": "src",
+      "outDir": "dist-server/",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.server.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.server.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "rupeez",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      },
+      "serviceWorker": true,
+      "platform": "server",
+      "name": "rupeez-universal"
     }
   ],
   "e2e": {
