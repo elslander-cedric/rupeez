@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 
 const app = express();
-//const map = gmaps();
+// const map = gmaps();
 
 const settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
 
@@ -19,8 +19,6 @@ app.use(express.static('dist'));
 
 app.use('/nearby', express.json());
 app.post('/nearby', (request: Request, response: Response, next: NextFunction) => {
-    console.log('data: ', request.body);
-
     mapService.placesNearby({
         opennow: true,
         type: request.body.type,
@@ -28,14 +26,13 @@ app.post('/nearby', (request: Request, response: Response, next: NextFunction) =
         rankby: 'distance'
     }, (err, res) => {
         if (!err) {
-            console.log("got data: ", res.json);
             // res.pipe(response, { end: true });
 
             response.send(res.json.results.map(place => {
                 return {
                     longitude: place.geometry.location.lng,
                     latitude: place.geometry.location.lat
-                }
+                };
             }));
         } else {
             response.statusMessage = err;

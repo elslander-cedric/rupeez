@@ -1,6 +1,5 @@
-import { AgmCoreModule } from '@agm/core';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -18,13 +17,10 @@ import { environment } from '../environments/environment';
     LocatorComponent
   ],
   imports: [
-    HttpModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M' // TODO-FIXME: get this somewhere else
-    }),
+    HttpClientModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }), // TODO: need to fine tune sw
     RouterModule
   ],
   providers: [{

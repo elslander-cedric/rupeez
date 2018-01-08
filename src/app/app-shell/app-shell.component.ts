@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-app-shell',
+  selector: 'rupeez-app-shell',
   templateUrl: './app-shell.component.html',
   styleUrls: ['./app-shell.component.css']
 })
@@ -12,4 +12,5 @@ export class AppShellComponent implements OnInit {
   ngOnInit() {
   }
 
+  // TODO: implement this
 }

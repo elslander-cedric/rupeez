@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Place } from '@rupeez/place';
 import { LocationProvider } from '@rupeez/location-provider';
-import { Observable, Observer } from 'rxjs/Rx';
+import { Place } from '@rupeez/place';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class LocatorMockService implements LocationProvider {
@@ -17,14 +20,14 @@ export class LocatorMockService implements LocationProvider {
     ]);
   }
 
-  public getCurrentPosition(): Observable<{ longitude: number, latitude: number }> {    
-    return new Observable((observer: Observer<{ longitude: number, latitude: number }>) => {
+  public getCurrentPosition(): Observable<Place> {
+    return new Observable((observer: Observer<Place>) => {
       navigator.geolocation.watchPosition(
         (position: Position) => {
           observer.next({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
-          });
+          } as Place);
         });
     });
   }

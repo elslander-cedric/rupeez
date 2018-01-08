@@ -1,44 +1,35 @@
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
-import { Observable, Subject } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class LocatorService implements LocationProvider {
 
-  private _currentPosition = new Subject<{ longitude: number, latitude: number }>();
+  private _currentPosition = new Subject<Place>();
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     navigator.geolocation.watchPosition(
-      (position: Position) => {
-        console.log('emit new position: %o', position);
-
-        this._currentPosition.next({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        });
-      }, err => console.log(err), { maximumAge: 10000 });
+      (position: Position) => this._currentPosition.next({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      } as Place), err => console.log(err), { maximumAge: 10000 });
   }
 
   public getNearby(type: string): Observable<Array<Place>> {
-    console.log('get nearby %s', type);
-
     return this.getCurrentPosition()
-      .switchMap((position) => {
-        console.log('get nearby %s from locator service', type);
-
-        return this.http
-          .post('/nearby', { type: type, location: position })
-          .map((response) => {
-            return response.json();
-          });
-      });
+      .switchMap((position) => this.http
+        .post<Array<Place>>('/nearby', { type: type, location: position }));
   }
 
-  public getCurrentPosition(): Observable<{ longitude: number, latitude: number }> {
-    console.log('get current position');
-    
+  public getCurrentPosition(): Observable<Place> {
     return this._currentPosition
       .debounceTime(1000)
       .distinctUntilChanged();

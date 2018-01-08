@@ -1,7 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ElementRef, Renderer, ViewChild } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { setTimeout } from 'timers';
+
+declare var google;
 
 @Component({
   selector: 'rupeez-locator',
@@ -11,18 +14,37 @@ import { Observable } from 'rxjs/Rx';
 export class LocatorComponent implements OnInit {
 
   places: Observable<Array<Place>>;
-  position: Observable<{ longitude: number, latitude: number }>;
+  position: Observable<Place>;
+
+  @ViewChild('gmap', { read: ElementRef }) gmap: ElementRef;
 
   constructor(
     @Inject('LocationProvider')
-    private locationProvider: LocationProvider) { }
+    private locationProvider: LocationProvider,
+
+    private el: ElementRef,
+    private renderer: Renderer) { }
+
+  private map;
 
   ngOnInit() {
-    this.places = this.locationProvider.getNearby('atm');
-    this.position = this.locationProvider.getCurrentPosition();
-  }
+    this.map = new google.maps.Map(this.gmap.nativeElement, { zoom: 12 });
 
-  onPlaceClick(place: Place) {
-    console.log('clicked:', place);
+    this.locationProvider
+      .getCurrentPosition()
+      .subscribe((place: Place) => {
+        this.map.setCenter({ lat: place.latitude, lng: place.longitude })
+      });
+
+    this.locationProvider
+      .getNearby('atm')
+      .subscribe((places: Array<Place>) =>
+        places.map((place: Place) => new google.maps.Marker({
+          position: { lat: place.latitude, lng: place.longitude },
+          map: this.map
+        }).addListener('click', function () {
+          this.map.setZoom(14);
+          this.map.setCenter(this.getPosition());
+        })));
   }
 }

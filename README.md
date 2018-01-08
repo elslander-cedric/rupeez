@@ -7,6 +7,8 @@
 
 # Rupeez
 
+TODO: add docs ...
+
 ATM Locator
 
 ## Prerequisites

@@ -8,6 +8,7 @@ import { AppShellComponent } from './app-shell/app-shell.component';
 
 const routes: Routes = [ { path: 'shell', component: AppShellComponent }];
 
+// TODO: use universal for API key
 @NgModule({
   imports: [
     AppModule,

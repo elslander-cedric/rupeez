@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { LocatorMockService } from '@rupeez/locator-mock.service';
 
 import { LocatorComponent } from './locator.component';
 
@@ -6,9 +7,15 @@ describe('LocatorComponent', () => {
   let component: LocatorComponent;
   let fixture: ComponentFixture<LocatorComponent>;
 
+  // TODO: needs more tests => see code coverage report
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocatorComponent ]
+      imports: [],
+      declarations: [ LocatorComponent ],
+      providers: [{
+        provide: 'LocationProvider',
+        useClass: LocatorMockService
+      }]
     })
     .compileComponents();
   }));

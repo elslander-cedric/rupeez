@@ -1,15 +1,1 @@
-<agm-map  
-  [latitude]="(position|async)?.latitude"
-  [longitude]="(position|async)?.longitude"
-  [zoom]="14">
-
-  <agm-marker
-    *ngFor="let place of (places|async)"
-    [latitude]="place?.latitude"
-    [longitude]="place?.longitude"
-    [label]="'€'"
-    (markerClick)="onPlaceClick(place)">
-    
-    <agm-info-window>TODO: ATM INFO</agm-info-window>
-  </agm-marker>
-</agm-map>
+<div #gmap [ngClass]="['map']"></div>
