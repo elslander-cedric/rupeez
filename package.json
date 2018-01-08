@@ -10,7 +10,7 @@
     "ng-start-dev": "ng serve --env=dev --target=development",
     "ng-start-stg": "ng serve --proxy-config proxy.conf.json --env=stg --target=development",
     "ng-start-prod": "ng serve --ssl true --disable-host-check --host=0.0.0.0 --env=prod --target=production",
-    "ng-test": "ng test",
+    "ng-test": "ng test -sm=false",
     "ng-report": "ng test --no-watch --code-coverage",
     "dist-merge": "cp -r dist/* dist-server/",
     "node-build": "tsc -p src/tsconfig.server.json",

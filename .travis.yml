@@ -29,7 +29,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - npm run lint
+  - npm run ng-lint
   - npm run ng-report
 
 after_success:

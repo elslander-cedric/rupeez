@@ -14,21 +14,16 @@ export class LocatorMockService implements LocationProvider {
   public getNearby(type: string): Observable<Array<Place>> {
     return Observable.of([
       {
-        latitude: 51.064173,
-        longitude: 3.697017
+        latitude: 0,
+        longitude: 0
       } as Place
     ]);
   }
 
   public getCurrentPosition(): Observable<Place> {
-    return new Observable((observer: Observer<Place>) => {
-      navigator.geolocation.watchPosition(
-        (position: Position) => {
-          observer.next({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          } as Place);
-        });
-    });
+    return Observable.of({
+      latitude: 0,
+      longitude: 0
+    } as Place);
   }
 }

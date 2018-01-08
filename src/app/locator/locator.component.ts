@@ -1,8 +1,7 @@
-import { Component, Inject, OnInit, ElementRef, Renderer, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
-import { setTimeout } from 'timers';
 
 declare var google;
 
@@ -23,7 +22,7 @@ export class LocatorComponent implements OnInit {
     private locationProvider: LocationProvider,
 
     private el: ElementRef,
-    private renderer: Renderer) { }
+    private renderer: Renderer2) { }
 
   private map;
 
@@ -33,7 +32,7 @@ export class LocatorComponent implements OnInit {
     this.locationProvider
       .getCurrentPosition()
       .subscribe((place: Place) => {
-        this.map.setCenter({ lat: place.latitude, lng: place.longitude })
+        this.map.setCenter({ lat: place.latitude, lng: place.longitude });
       });
 
     this.locationProvider
