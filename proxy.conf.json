@@ -1,0 +1,11 @@
+{
+  "/nearby": {
+    "target": {
+      "host": "localhost",
+      "port": 9876
+    },
+    "ws": false,
+    "logLevel": "debug",
+    "secure": false
+  }
+}

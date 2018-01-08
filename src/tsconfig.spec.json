@@ -8,7 +8,10 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "paths": {
+      "@rupeez/*": ["app/*"]
+    }
   },
   "files": [
     "test.ts"

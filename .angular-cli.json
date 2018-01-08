@@ -25,6 +25,7 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
+        "it": "environments/environment.it.ts",
         "prod": "environments/environment.prod.ts"
       },
       "serviceWorker": true,

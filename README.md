@@ -1,27 +1,60 @@
+[![NPM Version](https://img.shields.io/npm/v/@elslander-cedric/rupeez.svg)](https://www.npmjs.com/package/@elslander-cedric/rupeez)
+[![NPM License](https://img.shields.io/npm/l/@elslander-cedric/rupeez.svg)](https://www.npmjs.com/package/@elslander-cedric/rupeez)
+[![Dependencies Status](https://david-dm.org/elslander-cedric/rupeez/status.svg)](https://david-dm.org/elslander-cedric/rupeez)
+[![devDependencies Status](https://david-dm.org/elslander-cedric/rupeez/dev-status.svg)](https://david-dm.org/elslander-cedric/rupeez?type=dev)
+[![Build Status](https://travis-ci.org/elslander-cedric/rupeez.svg?branch=master)](https://travis-ci.org/elslander-cedric/rupeez)
+[![Coverage Status](https://coveralls.io/repos/github/elslander-cedric/rupeez/badge.svg)](https://coveralls.io/github/elslander-cedric/rupeez)
+
 # Rupeez
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
+ATM Locator
 
-## Development server
+## Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* Google Maps API key
 
-## Code scaffolding
+## Table of Contents
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* [Project Status](#project-status)
+* [Supported Devices](#supported-devices)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
+* [Documentation](#documentation)
+* [Limitations](#limitations)
+* [License](#license)
 
-## Build
+## Project Status
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
+## Supported Devices
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Installation
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+**BEFORE YOU INSTALL:** please read the [prerequisites](#prerequisites)
+```bash
+npm install rupeez
+```
 
-## Further help
+## Configuration
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Make a settings.json in rupeez folder with:
+
+```javascript
+{
+
+}
+```
+
+## Usage
+
+Navigate to `http://[hostname]:[port]]/`
+
+## Documentation
+
+### Screenshots
+
+## Limitations
+
+## License

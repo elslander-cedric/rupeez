@@ -1,25 +1,36 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { AgmCoreModule } from '@agm/core';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-
+import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AppComponent } from './app.component';
+import { AppRoutingModule } from '@rupeez/app-routing.module';
+import { AppComponent } from '@rupeez/app.component';
+import { LocatorMockService } from '@rupeez/locator-mock.service';
+import { LocatorService } from '@rupeez/locator.service';
+import { LocatorComponent } from '@rupeez/locator/locator.component';
 
 import { environment } from '../environments/environment';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LocatorComponent
   ],
   imports: [
+    HttpModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M' // TODO-FIXME: get this somewhere else
+    }),
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     RouterModule
   ],
-  providers: [],
+  providers: [{
+    provide: 'LocationProvider',
+    useClass: environment.location ? LocatorService : LocatorMockService
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

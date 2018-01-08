@@ -4,7 +4,10 @@
     "outDir": "../dist-server/",
     "baseUrl": "./",
     "module": "commonjs",
-    "types": []
+    "types": [],
+    "paths": {
+      "@rupeez/*": ["app/*"]
+    }
   },
   "exclude": [
     "test.ts",
