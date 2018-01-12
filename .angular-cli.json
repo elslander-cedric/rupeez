@@ -5,6 +5,7 @@
   },
   "apps": [
     {
+      "name": "rupeez",
       "appShell": {
         "app": "rupeez-universal",
         "route": "shell"
@@ -13,7 +14,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "manifest.json"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -37,7 +39,7 @@
     {
       "name": "rupeez-universal",
       "root": "src",
-      "outDir": "dist-server/",
+      "outDir": "dist-universal/",
       "assets": [
         "assets",
         "favicon.ico"

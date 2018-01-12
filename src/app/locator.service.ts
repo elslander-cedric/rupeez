@@ -16,6 +16,8 @@ export class LocatorService implements LocationProvider {
   private _currentPosition = new Subject<Place>();
 
   constructor(private http: HttpClient) {
+    console.log('create locator service');
+    
     navigator.geolocation.watchPosition(
       (position: Position) => this._currentPosition.next({
         latitude: position.coords.latitude,
@@ -24,9 +26,14 @@ export class LocatorService implements LocationProvider {
   }
 
   public getNearby(type: string): Observable<Array<Place>> {
+    console.log('get nearby');
+    
     return this.getCurrentPosition()
-      .switchMap((position) => this.http
-        .post<Array<Place>>('/nearby', { type: type, location: position }));
+      .switchMap((position) => {
+        console.log('send request');
+        return this.http
+        .post<Array<Place>>('/nearby', { type: type, location: position })});
+        
   }
 
   public getCurrentPosition(): Observable<Place> {

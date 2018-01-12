@@ -4,21 +4,17 @@ import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 
 const app = express();
-// const map = gmaps();
-
 const settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
-
 const mapService = gmaps.createClient({ key: settings.googleMapsAPIKey });
 
+// logger
 app.use((req, res, next) => {
     console.log(`[${req.method}] - [${req.path}]`);
     next();
 });
 
-app.use(express.static('dist'));
-
-app.use('/nearby', express.json());
-app.post('/nearby', (request: Request, response: Response, next: NextFunction) => {
+// API handlers
+app.post('/nearby', express.json(), (request: Request, response: Response, next: NextFunction) => {
     mapService.placesNearby({
         opennow: true,
         type: request.body.type,
@@ -41,6 +37,12 @@ app.post('/nearby', (request: Request, response: Response, next: NextFunction) =
     });
 });
 
+// static files
+app.use(express.static(__dirname));
+
+// redirect to root
+// app.use('**', (req,res) => res.redirect('/'));
+app.use('**', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.listen(settings.port);
 
 console.log('server listening on port: ', settings.port);
