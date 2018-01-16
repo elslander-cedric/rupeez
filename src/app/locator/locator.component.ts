@@ -1,9 +1,8 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
-
-declare var google;
+import { } from '@types/googlemaps';
 
 @Component({
   selector: 'rupeez-locator',
@@ -11,6 +10,8 @@ declare var google;
   styleUrls: ['./locator.component.css']
 })
 export class LocatorComponent implements OnInit {
+
+  map: google.maps.Map;
 
   places: Observable<Array<Place>>;
   position: Observable<Place>;
@@ -24,13 +25,11 @@ export class LocatorComponent implements OnInit {
     private el: ElementRef,
     private renderer: Renderer2) { }
 
-  private map;
-
   ngOnInit() {
     this.map = new google.maps.Map(this.gmap.nativeElement, { zoom: 12 });
 
     this.locationProvider
-      .getCurrentPosition()
+      .currentPosition
       .subscribe((place: Place) => {
         this.map.setCenter({ lat: place.latitude, lng: place.longitude });
       });

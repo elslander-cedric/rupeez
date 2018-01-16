@@ -11,15 +11,10 @@ describe('LocatorService', () => {
 
     beforeAll(() => {
         spyOn(navigator.geolocation, 'watchPosition').and.callFake((...args) => {
-            args[0]({
-                coords: {
-                    latitude: 0,
-                    longitude: 0
-                }
-            } as Position);
+            args[0]({ coords: { latitude: 0, longitude: 0 } } as Position);
         });
     });
-    
+
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -35,27 +30,25 @@ describe('LocatorService', () => {
         backend.verify();
     }));
 
-    it('should get places nearby', async(
-        inject([LocatorService, HttpTestingController], (locatorService: LocatorService, backend: HttpTestingController) => {
-            locatorService.getNearby('atm').subscribe((places: Array<Place>) => {
-                console.log('get nearby mock reply');
-
-                expect(places).toEqual([
-                    {
-                        longitude: 0,
-                        latitude: 0
-                    } as Place
-                ]);
+    it('should get current position', async(
+        inject([LocatorService], (locatorService: LocatorService) => {
+            locatorService.currentPosition.subscribe((place: Place) => {
+                expect(place).toEqual(
+                    { longitude: 0, latitude: 0 } as Place
+                );
             });
-
-            backend.expectOne({ url: '/nearby', method: 'POST' }).flush([
-                {
-                    longitude: 0,
-                    latitude: 0
-                } as Place
-            ]);
-
         })
     ));
 
+    it('should get places nearby', async(
+        inject([LocatorService, HttpTestingController], (locatorService: LocatorService, backend: HttpTestingController) => {
+            locatorService.getNearby('atm').subscribe((places: Array<Place>) => {
+                expect(places).toEqual([ { longitude: 0, latitude: 0 } as Place ]);
+            });
+
+            backend.expectOne({ url: '/nearby', method: 'POST' }).flush([
+                { longitude: 0, latitude: 0 } as Place
+            ]);
+        })
+    ));
 });

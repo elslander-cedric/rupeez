@@ -1,8 +1,15 @@
 var google = {
     maps: {
         Map: function(){
-            return {
-                setCenter: function() {},
+            var _center;
+
+            return {                
+                setCenter: function(center) {
+                    _center = center;
+                },
+                getCenter: function() {
+                    return _center;
+                },
                 setZoom: function() {}
             };
         },

@@ -20,7 +20,7 @@ export class LocatorMockService implements LocationProvider {
     ]);
   }
 
-  public getCurrentPosition(): Observable<Place> {
+  public get currentPosition(): Observable<Place> {
     return Observable.of({
       latitude: 0,
       longitude: 0

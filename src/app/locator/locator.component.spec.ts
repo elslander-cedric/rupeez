@@ -1,11 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LocatorService } from '../locator.service';
 import { LocatorComponent } from './locator.component';
-
-// TODO: needs more tests => see code coverage report
 
 describe('LocatorComponent', () => {
   let component: LocatorComponent;
@@ -13,12 +11,7 @@ describe('LocatorComponent', () => {
 
   beforeAll(() => {
     spyOn(navigator.geolocation, 'watchPosition').and.callFake((...args) => {
-      args[0]({
-        coords: {
-          latitude: 0,
-          longitude: 0
-        }
-      } as Position);
+      args[0]({ coords: { latitude: 0, longitude: 0 } } as Position);
     });
   });
 
@@ -45,10 +38,12 @@ describe('LocatorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get places nearby', async(
-    inject([HttpTestingController], (backend: HttpTestingController) => {
-      backend.expectOne({ url: '/nearby', method: 'POST' });
-    })
-  ));
+  it('map should be centered on current position', () => {
+    expect(component.map.getCenter().lat).toEqual(0);
+    expect(component.map.getCenter().lat).toEqual(0);
+  });
 
+  it('map should contain markers of atms nearby', () => {
+    // TODO-FIXME
+  });
 });

@@ -3,6 +3,6 @@ import { Observable } from 'rxjs/Observable';
 
 export interface LocationProvider {
 
+    currentPosition: Observable<Place>;
     getNearby(type: string): Observable<Array<Place>>;
-    getCurrentPosition(): Observable<Place>;
 }

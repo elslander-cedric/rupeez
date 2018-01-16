@@ -8,37 +8,30 @@ import { Injectable } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observer } from 'rxjs/Observer';
 
 @Injectable()
 export class LocatorService implements LocationProvider {
 
-  private _currentPosition = new Subject<Place>();
+  private _currentPosition: Observable<Place>;
 
   constructor(private http: HttpClient) {
-    console.log('create locator service');
-    
-    navigator.geolocation.watchPosition(
-      (position: Position) => this._currentPosition.next({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-      } as Place), err => console.log(err), { maximumAge: 10000 });
+    this._currentPosition = new Observable<Place>((observer: Observer<Place>) => {
+      navigator.geolocation.watchPosition(
+        (position: Position) => observer.next({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        } as Place), err => console.log(err), { maximumAge: 10000 });
+    });
   }
 
   public getNearby(type: string): Observable<Array<Place>> {
-    console.log('get nearby');
-    
-    return this.getCurrentPosition()
-      .switchMap((position) => {
-        console.log('send request');
-        return this.http
-        .post<Array<Place>>('/nearby', { type: type, location: position })});
-        
+    return this._currentPosition
+      .switchMap(position => this.http
+        .post<Array<Place>>('/nearby', { type: type, location: position }));
   }
 
-  public getCurrentPosition(): Observable<Place> {
-    return this._currentPosition
-      .debounceTime(1000)
-      .distinctUntilChanged();
+  public get currentPosition(): Observable<Place> {
+    return this._currentPosition;
   }
 }
