@@ -29,6 +29,7 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false,
-    files: ['src/app/google.mock.js']
+    files: ['http://maps.googleapis.com/maps/api/js?sensor=false&language=en'],
+    crossOriginAttribute: false
   });
 };

@@ -12,9 +12,10 @@ import { } from '@types/googlemaps';
 export class LocatorComponent implements OnInit {
 
   map: google.maps.Map;
+  markers = new Array<google.maps.Marker>();
 
-  places: Observable<Array<Place>>;
   position: Observable<Place>;
+  places: Observable<Array<Place>>;
 
   @ViewChild('gmap', { read: ElementRef }) gmap: ElementRef;
 
@@ -37,12 +38,19 @@ export class LocatorComponent implements OnInit {
     this.locationProvider
       .getNearby('atm')
       .subscribe((places: Array<Place>) =>
-        places.map((place: Place) => new google.maps.Marker({
-          position: { lat: place.latitude, lng: place.longitude },
-          map: this.map
-        }).addListener('click', function () {
-          this.map.setZoom(14);
-          this.map.setCenter(this.getPosition());
-        })));
+        places.map((place: Place) => {
+          const marker = new google.maps.Marker({
+            position: { lat: place.latitude, lng: place.longitude },
+            map: this.map
+          });
+
+          marker.addListener('click', function () {
+            this.map.setZoom(14);
+            this.map.setCenter(this.getPosition());
+          });
+
+          this.markers.push(marker);
+        })
+      );
   }
 }
