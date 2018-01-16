@@ -13,17 +13,13 @@ export class LocatorMockService implements LocationProvider {
 
   public getNearby(type: string): Observable<Array<Place>> {
     return Observable.of([
-      {
-        latitude: 0,
-        longitude: 0
-      } as Place
+      { latitude: 51.054342, longitude: 3.717424 } as Place
     ]);
   }
 
   public get currentPosition(): Observable<Place> {
-    return Observable.of({
-      latitude: 0,
-      longitude: 0
-    } as Place);
+    return Observable.of(
+      { latitude: 51.054342, longitude: 3.717424 } as Place
+    )
   }
 }

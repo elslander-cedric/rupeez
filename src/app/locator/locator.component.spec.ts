@@ -11,7 +11,7 @@ describe('LocatorComponent', () => {
 
   beforeAll(() => {
     spyOn(navigator.geolocation, 'watchPosition').and.callFake((...args) => {
-      args[0]({ coords: { latitude: 0, longitude: 0 } } as Position);
+      args[0]({ coords: { latitude: 51.054342, longitude: 3.717424 } } as Position);
     });
   });
 
@@ -39,11 +39,11 @@ describe('LocatorComponent', () => {
   });
 
   it('map should be centered on current position', () => {
-    expect(component.map.getCenter().lat).toEqual(0);
-    expect(component.map.getCenter().lat).toEqual(0);
+    expect(component.map.getCenter().lat).toEqual(51.054342);
+    expect(component.map.getCenter().lng).toEqual(3.717424);
   });
 
   it('map should contain markers of atms nearby', () => {
-    // TODO-FIXME
+    // TODO-FIXME   
   });
 });

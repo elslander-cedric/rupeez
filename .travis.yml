@@ -1,3 +1,4 @@
+sudo: required
 dist: trusty
 
 addons:
@@ -19,8 +20,6 @@ cache:
      - node_modules
 
 install:
-  #- npm install -g @angular/cli
-  #- npm install -g karma
   - npm install
 
 before_script:
@@ -31,6 +30,7 @@ before_script:
 script:
   - npm run ng-lint
   - npm run ng-report
+  - npm run ng-e2e
 
 after_success:
   - npm run coveralls
