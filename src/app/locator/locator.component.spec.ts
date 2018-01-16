@@ -44,6 +44,6 @@ describe('LocatorComponent', () => {
   });
 
   it('map should contain markers of atms nearby', () => {
-    // TODO-FIXME   
+    // TODO-FIXME
   });
 });
