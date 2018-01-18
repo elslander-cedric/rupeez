@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { Observer } from 'rxjs/Observer';
-
-import 'rxjs/add/observable/of';
 
 @Injectable()
 export class LocatorMockService implements LocationProvider {
@@ -22,7 +21,7 @@ export class LocatorMockService implements LocationProvider {
   }
 
   public getNearby(type: string): Observable<Array<Place>> {
-    return Observable.of([
+    return of([
       { latitude: 51.07, longitude: 3.74 } as Place
     ]);
   }
