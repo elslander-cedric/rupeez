@@ -11,6 +11,4 @@ export class AppShellComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  // TODO: implement this
 }

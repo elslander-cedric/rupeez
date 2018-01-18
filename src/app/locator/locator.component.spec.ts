@@ -48,7 +48,7 @@ describe('LocatorComponent', () => {
   });
 
   it('map should be centered when marker is clicked', () => {
-    google.maps.event.trigger(component.markers[0], 'click'),
-      expect(component.map.getCenter()).toBe(component.markers[0].getPosition());
+    google.maps.event.trigger(component.markers[0], 'click');
+    expect(component.map.getCenter()).toBe(component.markers[0].getPosition());
   });
 });
