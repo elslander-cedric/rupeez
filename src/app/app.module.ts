@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -10,6 +10,7 @@ import { LocatorService } from '@rupeez/locator.service';
 import { LocatorComponent } from '@rupeez/locator/locator.component';
 
 import { environment } from '../environments/environment';
+import { LoggingInterceptor } from './logging-interceptor';
 
 @NgModule({
   declarations: [
@@ -23,10 +24,16 @@ import { environment } from '../environments/environment';
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }), // TODO: need to fine tune sw
     RouterModule
   ],
-  providers: [{
-    provide: 'LocationProvider',
-    useClass: environment.location ? LocatorService : LocatorMockService
-  }],
+  providers: [
+    {
+      provide: 'LocationProvider',
+      useClass: environment.location ? LocatorService : LocatorMockService
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoggingInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
