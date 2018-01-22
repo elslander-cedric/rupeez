@@ -1,19 +1,19 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist-universal/",
+    "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "commonjs",
+    "module": "es2015",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "types": [],
-    "paths": {
-      "@rupeez/*": ["app/*"]
-    }
+    "rootDir": "./server"
   },
+  "include": [
+    "server/**/*"
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
-  ],
-  "angularCompilerOptions": {
-    "entryModule": "app/app.server.module#AppServerModule"
-  }
+  ]
 }

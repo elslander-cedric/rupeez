@@ -3,7 +3,8 @@ import * as express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 
-const app = express();
+export const app = express();
+
 const settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
 const mapService = gmaps.createClient({ key: settings.googleMapsAPIKey });
 

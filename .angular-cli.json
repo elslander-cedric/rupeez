@@ -49,7 +49,7 @@
       "main": "main.server.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.server.json",
+      "tsconfig": "tsconfig.universal.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "rupeez",
       "serviceWorker": true,

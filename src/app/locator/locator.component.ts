@@ -36,7 +36,7 @@ export class LocatorComponent implements OnInit {
       });
 
     this.locationProvider
-      .getNearby('atm')
+      .getNearby('atm', progress => console.log(`... ${progress}%`) )
       .subscribe((places: Array<Place>) =>
         places.map((place: Place) => {
           const marker = new google.maps.Marker({

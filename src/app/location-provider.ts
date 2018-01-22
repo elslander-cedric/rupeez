@@ -4,5 +4,5 @@ import { Observable } from 'rxjs/Observable';
 export interface LocationProvider {
 
     currentPosition: Observable<Place>;
-    getNearby(type: string): Observable<Array<Place>>;
+    getNearby(type: string, onProgressChanged?: (progress: number) => void): Observable<Array<Place>>;
 }

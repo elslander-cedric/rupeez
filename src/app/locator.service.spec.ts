@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpEventType, HttpDownloadProgressEvent } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { async, inject, TestBed } from '@angular/core/testing';
 
@@ -51,6 +51,44 @@ describe('LocatorService', () => {
             backend.expectOne({ url: '/nearby', method: 'POST' }).flush([
                 { longitude: 0, latitude: 0 } as Place
             ]);
+        })
+    ));
+
+    it('should report progress while getting places nearby', async(
+        inject([LocatorService, HttpTestingController], (locatorService: LocatorService, backend: HttpTestingController) => {
+            const onProgressChanged = jasmine.createSpy('onProgressChanged');
+
+            locatorService.getNearby('atm', onProgressChanged).subscribe((places: Array<Place>) => {
+                expect(places).toEqual([{ longitude: 0, latitude: 0 } as Place]);
+            });
+
+            const request = backend.expectOne({ url: '/nearby', method: 'POST' });
+
+            request.event({
+                total: 1000,
+                loaded: 100,
+                type: HttpEventType.DownloadProgress
+            } as HttpDownloadProgressEvent);
+            request.event({
+                total: 1000,
+                loaded: 500,
+                type: HttpEventType.DownloadProgress
+            } as HttpDownloadProgressEvent);
+            request.event({
+                total: 1000,
+                loaded: 1000,
+                type: HttpEventType.DownloadProgress
+            } as HttpDownloadProgressEvent);
+
+            request.flush([
+                { longitude: 0, latitude: 0 } as Place
+            ]);
+
+            expect(onProgressChanged).toHaveBeenCalledWith(10);
+            expect(onProgressChanged).toHaveBeenCalledWith(50);
+            expect(onProgressChanged).toHaveBeenCalledWith(100);
+
+            expect(onProgressChanged).toHaveBeenCalledTimes(3);
         })
     ));
 });

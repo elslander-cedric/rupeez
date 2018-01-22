@@ -4,7 +4,7 @@ import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap, filter } from 'rxjs/operators';
 
 @Injectable()
 export class LocatorService implements LocationProvider {
@@ -21,33 +21,31 @@ export class LocatorService implements LocationProvider {
     });
   }
 
-  public getNearby(type: string): Observable<Array<Place>> {
-    return this._currentPosition.pipe(
-      switchMap(position => this.http
-        .post<Array<Place>>('/nearby', { type: type, location: position })));
-  }
+  public getNearby(type: string, onProgressChanged?: (progress: number) => void): Observable<Array<Place>> {
+    if (!onProgressChanged) {
+      return this._currentPosition.pipe(
+        switchMap(position => this.http
+          .post<Array<Place>>('/nearby', { type: type, location: position })));
+    } else {
+      return this._currentPosition.pipe(
+        switchMap(position => {
+          const request = new HttpRequest('POST', '/nearby',
+            { type: type, location: position },
+            { reportProgress: true, responseType: 'json' });
 
-  public getNearbyWithProgress(type: string): Observable<Array<Place>> {
-    return this._currentPosition.pipe(
-      switchMap(position => {
-        const request = new HttpRequest('POST', '/nearby',
-          { type: type, location: position },
-          { reportProgress: true });
-
-        return this.http
-          .request<Array<Place>>(request)
-          .pipe(tap(event => {
-            if (event.type === HttpEventType.DownloadProgress) {
-              const progress = (event.loaded / event.total) * 100;
-              console.log(`progress: ${progress}`);
-            }
-          }), map(event => {
-            if (event.type === HttpEventType.Response) {
-              const response = event as HttpResponse<Array<Place>>;
-              return response.body;
-            }
-          }));
-      }));
+          return this.http
+            .request<Array<Place>>(request);
+        }),
+        tap(event => {
+          if (event.type === HttpEventType.DownloadProgress) {
+            const progress = (event.loaded / event.total) * 100;
+            onProgressChanged(progress);
+          }
+        }),
+        filter(event => event.type === HttpEventType.Response),
+        map((event: HttpResponse<Array<Place>>) => event.body)
+      );
+    }
   }
 
   public get currentPosition(): Observable<Place> {
