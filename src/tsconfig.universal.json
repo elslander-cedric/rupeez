@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist-universal/",
+    "outDir": "../out-tsc/universal/",
     "baseUrl": "./",
     "module": "commonjs",
     "types": [],

@@ -31,12 +31,18 @@ script:
   - npm run ng-lint
   - npm run ng-report
   - npm run ng-e2e
+  - npm run node-report  
 
 after_success:
-  - npm run coveralls
+  - npm run ng-coveralls
+  - npm run node-coveralls
 
 before_deploy:
-# TODO: need to package things
+- npm run ng-build
+- npm run node-build
+- cd dist
+- tar -czvf ../rupeez-${TRAVIS_TAG}.tar.gz *
+- cd ..
 
 deploy:
    - provider: pages

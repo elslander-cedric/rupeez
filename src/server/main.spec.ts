@@ -1,19 +1,49 @@
 import { expect } from 'chai';
-import { request } from 'supertest';
-
-import * as main from './main';
-
-const request = require('supertest');
+import * as http from 'http';
+import { Main } from './main';
 
 describe('main', () => {
+    let main;
+
+    before(() => {
+        main = new Main();
+        main.init();
+    });
+
+    beforeEach(() => {
+        main.start();
+    });
+
+    afterEach(() => {
+        main.stop();
+    });
+
     it('server should return list of nearby atms', (done) => {
-        request(main.app)
-            .post('/nearby')
-            .send({ type: 'atm', location: { latitude: 51.07, longitude: 3.74 }})
-            .set('accept', 'json')
-            .end((err, res) => {
-                expect(res.body).to.has.length.greaterThan(0);
+        const body = JSON.stringify({
+            type: 'atm',
+            location: {
+                latitude: 51.07,
+                longitude: 3.74
+            }
+        });
+
+        const request = http.request({
+            hostname: 'localhost',
+            path: '/nearby',
+            method: 'POST',
+            port: main.settings.port,
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(body)
+            }
+        } as http.RequestOptions, (response: http.IncomingMessage) => {
+            response.on('data', (chunk) => {
+                expect(JSON.parse(chunk.toString())).to.has.length.greaterThan(0);
                 done();
             });
+        });
+
+        request.write(body);
+        request.end();
     });
 });

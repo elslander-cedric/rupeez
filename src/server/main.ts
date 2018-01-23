@@ -3,47 +3,89 @@ import * as express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 
-export const app = express();
 
-const settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
-const mapService = gmaps.createClient({ key: settings.googleMapsAPIKey });
+export class Main {
 
-// logger
-app.use((req, res, next) => {
-    console.log(`[${req.method}] - [${req.path}]`);
-    next();
-});
+    private _app;
+    private _server;
+    private _settings;
+    private _mapService;
 
-// API handlers
-app.post('/nearby', express.json(), (request: Request, response: Response, next: NextFunction) => {
-    mapService.placesNearby({
-        opennow: true,
-        type: request.body.type,
-        location: request.body.location,
-        rankby: 'distance'
-    }, (err, res) => {
-        if (!err) {
-            // res.pipe(response, { end: true });
+    constructor() {
+        this._app = express();
+        this._settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
+        this._mapService = gmaps.createClient({ key: this._settings.googleMapsAPIKey });
+    }
 
-            response.send(res.json.results.map(place => {
-                return {
-                    longitude: place.geometry.location.lng,
-                    latitude: place.geometry.location.lat
-                };
-            }));
-        } else {
-            response.statusMessage = err;
-            response.sendStatus(500);
-        }
-    });
-});
+    public get settings() {
+        return this._settings;
+    }
 
-// static files
-app.use(express.static(__dirname));
+    public init(): Main {
+        return this
+            .addLoggingInterceptor()
+            .registerAPIHandlers()
+            .setupStaticContent()
+            .addDefaultRoutes();
+    }
 
-// redirect to root
-// app.use('**', (req,res) => res.redirect('/'));
-app.use('**', (req, res) => res.sendFile(__dirname + '/index.html'));
-app.listen(settings.port);
+    public addLoggingInterceptor(): Main {
+        this._app.use((req, res, next) => {
+            console.log(`[${req.method}] - [${req.path}]`);
+            next();
+        });
 
-console.log('server listening on port: ', settings.port);
+        return this;
+    }
+
+    public addDefaultRoutes(): Main {
+        // redirect to root
+        // app.use('**', (req,res) => res.redirect('/'));
+        this._app.use('**', (req, res) => res.sendFile(__dirname + '/index.html'));
+
+        return this;
+    }
+
+    public setupStaticContent(): Main {
+        this._app.use(express.static(__dirname));
+
+        return this;
+    }
+
+    public registerAPIHandlers(): Main {
+        this._app.post('/nearby', express.json(), (request: Request, response: Response, next: NextFunction) => {
+            this._mapService.placesNearby({
+                opennow: true,
+                type: request.body.type,
+                location: request.body.location,
+                rankby: 'distance'
+            }, (err, res) => {
+                if (!err) {
+                    // res.pipe(response, { end: true });
+
+                    response.send(res.json.results.map(place => {
+                        return {
+                            longitude: place.geometry.location.lng,
+                            latitude: place.geometry.location.lat
+                        };
+                    }));
+                } else {
+                    response.statusMessage = err;
+                    response.sendStatus(500);
+                }
+            });
+        });
+
+        return this;
+    }
+
+    public start(): void {
+        this._server = this._app.listen(this._settings.port);
+        console.log('server listening on port: ', this._settings.port);
+    }
+
+    public stop(): void {
+        console.log('server stopping');
+        this._server.close();
+    }
+}
