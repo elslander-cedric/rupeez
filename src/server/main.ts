@@ -14,12 +14,12 @@ export class Main {
     constructor(settings?: Object) {
         this._app = express();
 
-        if(settings){
+        if (settings) {
             this._settings = settings;
         } else {
             this._settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
         }
-        
+
         this._mapService = gmaps.createClient({ key: this._settings.googleMapsAPIKey });
     }
 
