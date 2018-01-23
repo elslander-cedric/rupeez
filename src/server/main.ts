@@ -11,9 +11,15 @@ export class Main {
     private _settings;
     private _mapService;
 
-    constructor() {
+    constructor(settings?: Object) {
         this._app = express();
-        this._settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
+
+        if(settings){
+            this._settings = settings;
+        } else {
+            this._settings = JSON.parse(fs.readFileSync('settings.json', 'utf-8'));
+        }
+        
         this._mapService = gmaps.createClient({ key: this._settings.googleMapsAPIKey });
     }
 
