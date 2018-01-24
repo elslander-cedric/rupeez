@@ -29,13 +29,12 @@ before_script:
 
 script:
   - npm run ng-lint
-  - npm run ng-report
   - npm run ng-e2e
-  - npm run node-report  
+  - npm run ng-test-report  
+  - npm run node-test-report  
 
 after_success:
-  - npm run ng-coveralls
-  - npm run node-coveralls
+  - npm run coveralls
 
 before_deploy:
 - npm run ng-build

@@ -9,15 +9,17 @@
     "ng-start-stg": "ng serve --proxy-config proxy.conf.json --env=stg --target=development",
     "ng-start-prod": "ng serve --ssl true --disable-host-check --host=0.0.0.0 --env=prod --target=production",
     "ng-test": "ng test -sm=false",
-    "ng-report": "ng test --no-watch --code-coverage",
+    "ng-test-report": "ng test --no-watch --code-coverage",
     "ng-coveralls": "cat ./coverage/lcov.info | coveralls",
     "ng-build": "ng build --env=prod --target=production",
 
     "node-start": "nodemon --exec ts-node src/server/bootstrap.ts",
     "node-test": "nyc mocha --opts ./mocha.opts --watch --watch-extensions ts",  
-    "node-report": "nyc --report-dir node-coverage --reporter=text --reporter=html mocha --opts ./mocha.opts",
-    "node-coveralls": "nyc report --reporter=text-lcov --report-dir node-coverage | coveralls",
+    "node-test-report": "nyc mocha --opts ./mocha.opts",
+    "node-coveralls": "nyc report --reporter=text-lcov | coveralls",
     "node-build": "tsc -p src/tsconfig.server.json",
+
+    "coveralls": "cat coverage/lcov.info node-coverage/lcov.info | coveralls",
 
     "start": "nodemon --watch 'src' -e 'ts html css' --exec 'npm run ng-build-prod && npm run node-build && node dist/bootstrap.js'",
     "release": "npm version patch && git push --tags origin master && npm publish --access public"
@@ -32,12 +34,13 @@
       "*.spec.ts"
     ],
     "reporter": [
-      "lcov",
+      "lcovonly",
+      "text",
       "html"
     ],
     "all": true,
     "cwd": "src/server",
-    "report-dir": "../../node-coverage",
+    "report-dir": "node-coverage",
     "temp-directory": "../../node-coverage/.nyc_output"
   },
   "private": true,
