@@ -1,66 +1,53 @@
 sudo: required
 dist: trusty
-
 addons:
   chrome: stable
-
 language: node_js
-
 node_js:
-  - node
-
+- node
 branches:
   only:
   - master
   - gh-pages
   - "/.*/"
-
 cache:
   directories:
-     - node_modules
-
+  - node_modules
 install:
-  - npm install
-
+- npm install
 before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
-
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
 script:
-  - npm run ng-lint
-  - npm run ng-e2e
-  - npm run ng-test-report  
-  - npm run node-test-report  
-
+- npm run ng-lint
+- npm run ng-e2e
+- npm run ng-test-report
+- npm run node-test-report
 after_success:
-  - npm run coveralls
-
+- npm run coveralls
 before_deploy:
 - npm run ng-build
 - npm run node-build
 - cd dist
 - tar -czvf ../rupeez-${TRAVIS_TAG}.tar.gz *
 - cd ..
-
 deploy:
-   - provider: pages
-     skip_cleanup: true
-     github_token: $GITHUB_TOKEN
-     on:
-       branch: master
-
-   - provider: releases
-     api_key:
-      secure: BRQqDq6Kkkgxbj7bbJJTfOFy0eAHPfQtP60FRGf/oRg6YACnSF0Bk6xoDQYr3RC8xfZ/nLwtCEAV8Xh6XBSZuzAheQdVBi+pBLJfdN2ndYCJD6ciThnsaxw+P6bZtFeSXvLlg27rVYRZCS7en0OFxD68Q5KzAW0iYFYHkzHP8FZF6bqGNiGylNs9vAlDeLUX2DGhOUaD71BXeQJO4LTIMlFG4nPBRpjM3DrLwgaonajRIdWlVQQAlwOKE6kLhKmBlrxuNKp7bI8QOZDfzlwogeY5pVJSAP+L6/umtfFWckYi7/I28nahctxd/1SRWOdjZIUF2h9Kw0pklaVkJ0siD0LM7gBTrMZmR6GE8jwYLhdZjI51jrdQtMpn1VXeXPF6saGEluL3Ra9BLW/q7yBHrekm4Rl1+gg9ciUv85RiE9WhIZ0lNPwPqogc/CFd2GjYJdNIuHlfI0a3b2WTE/T4LH06dFEWwXNl0zMNFYv3MpJKeGYgvsBuxcR9KyJDew62bEYWlDWoUyT/eS4cizFh9YXoyjYArZ+Y59L/RSJ9t/pnxj37z3u7NElctiZC9E6j6Cvs2IALRjvY+3TX6wWftuFnn6cdZQk5+ommC6jMa0r0BHQ/9ed9BcTc4ZGy+oZczwjrCrbIEQf99++PRzXvWBFV2cVQuC6xbzm88MD3zRk=
-     file: "rupeez-${TRAVIS_TAG}.tar.gz"
-     skip_cleanup: true
-     on:
-       tags: true
-
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    on:
+      branch: master
+  - provider: releases
+    api_key:
+      secure: JCYXiUK9xDcQT8tlOXEC2qRmZp3bdLLcTeTS+nIdrgrhvYJ+YTEDT3gHbJ09yJW68Qg2XMkgHubMvBu0ryzuDlqGWO8+iEm4Jc//rnueju4kttDfVyYoIad3JVXXmr3rOmasJZlu9aQDB+bW+4day9JXw127CKmvwsw3Y0dcz1zMUgQHE3E8EpJNUZU+y655SOxK9gx/zE7f2eYqyT0Atr5SW2fkU9TjMHhx3zWYNWSQ4T3dwdhEKDb21495kKVLbVBVIUbY4+3O6aeYPwqZ2fUtyQHGCQSIv7/nbHdOIjhO/A/AuEZpMsQX+qZeTMrQ9BcKjP1wtD8OjPDgPmaWJw0C/rlhNT3vo1Ii9o1/i/nD5cIFk0x4mEQHluu0GQoG0OQSsIpdiskV2gzbBd5r5eYUTkZex+legb9JkI8vE8cDGaBhUwSXMa0EMj8V/Zv/wQHidRKbK3YpsPoMZ5xHUTFxAGy/PcHEv1RgMSrh1D0s8eq4OSOvvZaSTrgOIHesmEdIKPBuKeGT6/6dIRLO7bV8jG2j9wE2OlvlqjfrqiKcGN1nb9kJc0qD8HJXCZK9lJbL39hGFv/19lNooDWlff2qC/4IZ7vltO/WI6FnM0Lse0xuLXz+v+BOdvHRTtHtTgD6/5ouPNZSg1FB556Mu203HIiX01boMG15A9RzRwI=
+    file: rupeez-${TRAVIS_TAG}.tar.gz
+    skip_cleanup: true
+    on:
+      tags: true
 notifications:
   email:
     recipients:
-      - cedric.elslander@gmail.com
+    - cedric.elslander@gmail.com
     on_success: never
     on_failure: always
