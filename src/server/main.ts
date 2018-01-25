@@ -100,7 +100,7 @@ export class Main {
     }
 }
 
-if(require.main === module) {
+if (require.main === module) {
     new Main()
         .init()
         .start();
