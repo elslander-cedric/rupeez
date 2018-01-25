@@ -4,7 +4,7 @@
 [![devDependencies Status](https://david-dm.org/elslander-cedric/rupeez/dev-status.svg)](https://david-dm.org/elslander-cedric/rupeez?type=dev)
 [![Build Status](https://travis-ci.org/elslander-cedric/rupeez.svg?branch=master)](https://travis-ci.org/elslander-cedric/rupeez)
 [![Coverage Status](https://coveralls.io/repos/github/elslander-cedric/rupeez/badge.svg)](https://coveralls.io/github/elslander-cedric/rupeez)
-
+[![Documentation Coverage Status](https://elslander-cedric.github.io/rupeez/images/coverage-badge.svg)](https://elslander-cedric.github.io/rupeez/coverage)
 
 # Rupeez
 TODO: add rupee
