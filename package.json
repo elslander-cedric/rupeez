@@ -12,14 +12,14 @@
     "ng-test-report": "ng test --no-watch --code-coverage",
     "ng-coveralls": "cat ./coverage/lcov.info | coveralls",
     "ng-build": "ng build --env=prod --target=production",
-    "node-start": "nodemon --exec ts-node src/server/bootstrap.ts",
+    "node-start": "nodemon --exec ts-node src/server/main.ts",
     "node-test": "nyc mocha --opts ./mocha.opts --watch --watch-extensions ts",
     "node-test-report": "nyc mocha --opts ./mocha.opts",
     "node-coveralls": "nyc report --reporter=text-lcov | coveralls",
     "node-build": "tsc -p src/tsconfig.server.json",
     "coveralls": "cat coverage/lcov.info node-coverage/lcov.info | coveralls",
-    "start": "nodemon --watch 'src' -e 'ts html css' --exec 'npm run ng-build-prod && npm run node-build && node dist/bootstrap.js'",
-    "release": "npm version patch && git push --tags origin master && npm publish --access public"
+    "start": "nodemon --watch 'src' -e 'ts html css' --exec 'npm run ng-build-prod && npm run node-build && node dist/main.js'",
+    "release": "npm version patch && git push --tags origin master"
   },
   "nyc": {
     "extension": [
@@ -93,12 +93,14 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "less-loader": "^4.0.5",
     "mocha": "^5.0.0",
+    "mock-fs": "^4.4.2",
     "nyc": "^11.4.1",
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.1.2",
     "protractor": "~5.2.2",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.3",
+    "sinon": "^4.2.1",
     "source-map-loader": "^0.2.0",
     "style-loader": "^0.19.1",
     "stylus-loader": "^3.0.1",

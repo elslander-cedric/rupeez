@@ -27,6 +27,10 @@ export class Main {
         return this._settings;
     }
 
+    public get mapService() {
+        return this._mapService;
+    }
+
     public init(): Main {
         return this
             .addLoggingInterceptor()
@@ -94,4 +98,10 @@ export class Main {
         console.log('server stopping');
         this._server.close();
     }
+}
+
+if(require.main === module) {
+    new Main()
+        .init()
+        .start();
 }
