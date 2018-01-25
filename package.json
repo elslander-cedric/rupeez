@@ -11,7 +11,7 @@
     "ng-test": "ng test -sm=false",
     "ng-test-report": "ng test --no-watch --code-coverage",
     "ng-coveralls": "cat ./coverage/lcov.info | coveralls",
-    "ng-doc": "compodoc -p src/tsconfig.app.json",
+    "ng-doc": "compodoc --customFavicon ./src/favicon.ico --hideGenerator -p src/tsconfig.app.json",
     "ng-build": "ng build --env=prod --target=production",
     "node-start": "nodemon --exec ts-node src/server/main.ts",
     "node-test": "nyc mocha --opts ./mocha.opts --watch --watch-extensions ts",

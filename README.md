@@ -6,12 +6,15 @@
 [![Coverage Status](https://coveralls.io/repos/github/elslander-cedric/rupeez/badge.svg)](https://coveralls.io/github/elslander-cedric/rupeez)
 [![Documentation Coverage Status](https://elslander-cedric.github.io/rupeez/images/coverage-badge.svg)](https://elslander-cedric.github.io/rupeez/coverage)
 
-# Rupeez
-TODO: add rupee
+<p align='center'>
+    <img src='https://github.com/elslander-cedric/rupeez/blob/master/src/assets/rupee.gif?raw=true' width='3%'>
+    <br>
+    <label style='font-size: 2em'>Rupeez</label>
+</p>
 
-TODO: add docs ...
+# Huh
 
-ATM Locator
+It's an ATM Locator ...
 
 ## Prerequisites
 
