@@ -5,7 +5,9 @@
 [![Build Status](https://travis-ci.org/elslander-cedric/rupeez.svg?branch=master)](https://travis-ci.org/elslander-cedric/rupeez)
 [![Coverage Status](https://coveralls.io/repos/github/elslander-cedric/rupeez/badge.svg)](https://coveralls.io/github/elslander-cedric/rupeez)
 
+
 # Rupeez
+TODO: add rupee
 
 TODO: add docs ...
 
@@ -54,6 +56,8 @@ Make a settings.json in rupeez folder with:
 Navigate to `http://[hostname]:[port]]/`
 
 ## Documentation
+
+See [docs](https://elslander-cedric.github.io/rupeez/)
 
 ### Screenshots
 

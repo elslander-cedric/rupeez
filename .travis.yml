@@ -25,6 +25,7 @@ script:
 - npm run ng-test-report
 - npm run node-test-report
 after_success:
+- npm run ng-doc
 - npm run coveralls
 before_deploy:
 - npm run ng-build
@@ -35,6 +36,7 @@ before_deploy:
 deploy:
   - provider: pages
     skip_cleanup: true
+    local-dir: documentation
     github_token: $GITHUB_TOKEN
     on:
       branch: master

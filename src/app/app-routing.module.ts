@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LocatorComponent } from './locator/locator.component';
 import { AppShellComponent } from '@rupeez/app-shell/app-shell.component';
 
-const routes: Routes = [
+const APP_ROUTES: Routes = [
   {
     path: '',
     redirectTo: '/locator',
@@ -21,7 +21,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(APP_ROUTES)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

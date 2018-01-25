@@ -21,6 +21,14 @@ export class LocatorService implements LocationProvider {
     });
   }
 
+  /**
+   * Get nearby places for the given type, based on your current position.
+   * 
+   * @param type The type (ex: ATM)
+   * @param onProgressChanged Optional handler to be called when there's some progress during download
+   * 
+   * @returns The places nearby
+   */
   public getNearby(type: string, onProgressChanged?: (progress: number) => void): Observable<Array<Place>> {
     if (!onProgressChanged) {
       return this._currentPosition.pipe(
