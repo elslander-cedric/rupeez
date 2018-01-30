@@ -6,11 +6,22 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { map, switchMap, tap, filter } from 'rxjs/operators';
 
+/**
+ * Service that provides location data
+ */
 @Injectable()
 export class LocatorService implements LocationProvider {
 
+  /**
+   * Current position
+   */
   private _currentPosition: Observable<Place>;
 
+  /**
+   * Constructor
+   *
+   * @param http
+   */
   constructor(private http: HttpClient) {
     this._currentPosition = new Observable<Place>((observer: Observer<Place>) => {
       navigator.geolocation.watchPosition(
@@ -56,6 +67,10 @@ export class LocatorService implements LocationProvider {
     }
   }
 
+  /**
+   * Get the current position
+   *
+   */
   public get currentPosition(): Observable<Place> {
     return this._currentPosition;
   }

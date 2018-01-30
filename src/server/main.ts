@@ -3,14 +3,36 @@ import * as express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 
-
+/**
+ * Main class for Express Server
+ */
 export class Main {
 
+    /**
+     * Express App
+     */
     private _app;
+
+    /**
+     * Express Server
+     */
     private _server;
+
+    /**
+     * Settings
+     */
     private _settings;
+
+    /**
+     * Google Map Client
+     */
     private _mapService;
 
+    /**
+     * Constructor
+     *
+     * @param settings
+     */
     constructor(settings?: Object) {
         this._app = express();
 
@@ -23,14 +45,23 @@ export class Main {
         this._mapService = gmaps.createClient({ key: this._settings.googleMapsAPIKey });
     }
 
+    /**
+     * Get settings
+     */
     public get settings() {
         return this._settings;
     }
 
+    /**
+     * Get the Google Client
+     */
     public get mapService() {
         return this._mapService;
     }
 
+    /**
+     * Initialize
+     */
     public init(): Main {
         return this
             .addLoggingInterceptor()
@@ -39,6 +70,9 @@ export class Main {
             .addDefaultRoutes();
     }
 
+    /**
+     * Add Logging Interceptor
+     */
     public addLoggingInterceptor(): Main {
         this._app.use((req, res, next) => {
             console.log(`[${req.method}] - [${req.path}]`);
@@ -48,6 +82,9 @@ export class Main {
         return this;
     }
 
+    /**
+     * Add default routes
+     */
     public addDefaultRoutes(): Main {
         // redirect to root
         // app.use('**', (req,res) => res.redirect('/'));
@@ -56,12 +93,18 @@ export class Main {
         return this;
     }
 
+    /**
+     * Expose any static content
+     */
     public setupStaticContent(): Main {
         this._app.use(express.static(__dirname));
 
         return this;
     }
 
+    /**
+     * Register all API handlers
+     */
     public registerAPIHandlers(): Main {
         this._app.post('/nearby', express.json(), (request: Request, response: Response, next: NextFunction) => {
             this._mapService.placesNearby({
@@ -89,11 +132,17 @@ export class Main {
         return this;
     }
 
+    /**
+     * Start the server
+     */
     public start(): void {
         this._server = this._app.listen(this._settings.port);
         console.log('server listening on port: ', this._settings.port);
     }
 
+    /**
+     * Stop the server
+     */
     public stop(): void {
         console.log('server stopping');
         this._server.close();

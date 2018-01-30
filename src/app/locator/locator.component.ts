@@ -4,6 +4,9 @@ import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
 import { } from '@types/googlemaps';
 
+/**
+ * Component that encapsulates a map
+ */
 @Component({
   selector: 'rupeez-locator',
   templateUrl: './locator.component.html',
@@ -11,14 +14,38 @@ import { } from '@types/googlemaps';
 })
 export class LocatorComponent implements OnInit {
 
+  /**
+   * Google Map
+   */
   map: google.maps.Map;
+
+  /**
+   * Markers on the map
+   */
   markers = new Array<google.maps.Marker>();
 
+  /**
+   * Current position
+   */
   position: Observable<Place>;
+
+  /**
+   * The places nearby
+   */
   places: Observable<Array<Place>>;
 
+  /**
+   * Reference to the Google Map element
+   */
   @ViewChild('gmap', { read: ElementRef }) gmap: ElementRef;
 
+  /**
+   * Constructor
+   *
+   * @param locationProvider Location Provider
+   * @param el Element Reference
+   * @param renderer Renderer
+   */
   constructor(
     @Inject('LocationProvider')
     private locationProvider: LocationProvider,
@@ -26,6 +53,9 @@ export class LocatorComponent implements OnInit {
     private el: ElementRef,
     private renderer: Renderer2) { }
 
+  /**
+   * Initialize component
+   */
   ngOnInit() {
     this.map = new google.maps.Map(this.gmap.nativeElement, { zoom: 12 });
 
@@ -36,7 +66,7 @@ export class LocatorComponent implements OnInit {
       });
 
     this.locationProvider
-      .getNearby('atm', progress => console.log(`... ${progress}%`) )
+      .getNearby('atm', progress => console.log(`... ${progress}%`))
       .subscribe((places: Array<Place>) =>
         places.map((place: Place) => {
           const marker = new google.maps.Marker({

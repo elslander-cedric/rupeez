@@ -2,7 +2,16 @@ import { HttpEvent, HttpEventType, HttpHandler, HttpInterceptor, HttpRequest } f
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 
+/**
+ * HTTP Interceptor for Logging
+ */
 export class LoggingInterceptor implements HttpInterceptor {
+    /**
+     * Intercept HTTP exchange
+     *
+     * @param req request
+     * @param next handover function to call the next handler in the interceptorchain
+     */
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // REMARK: request & response objects are immutable
 
