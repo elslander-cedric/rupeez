@@ -1,5 +1,4 @@
 import { LocatorPage } from './locator.po';
-import { element } from 'protractor';
 
 describe('Locator', () => {
   let page: LocatorPage;
@@ -13,7 +12,7 @@ describe('Locator', () => {
     expect(page.getMap()).toBeTruthy();
   });
 
-  it('should recenter when a marker is clicked', () => {
+  xit('should recenter when a marker is clicked', () => {
     // TODO-FIXME
   });
 });

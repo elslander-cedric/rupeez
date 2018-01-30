@@ -8,16 +8,54 @@ exports.config = {
   specs: [
     './e2e/**/*.e2e-spec.ts'
   ],
-  capabilities: {
-    'browserName': 'chrome'
-  },
+
+  multiCapabilities: [
+    {
+      "browserName": "chrome",
+      chromeOptions: {
+        args: ["--window-size=800,600"]
+      }
+    },
+    {
+      "browserName": "chrome",
+      chromeOptions: {
+        mobileEmulation: {
+          deviceName: 'Nexus 7'
+        }
+      }
+    },
+    {
+      "browserName": "chrome",
+      chromeOptions: {
+        mobileEmulation: {
+          deviceName: 'Galaxy S5'
+        }
+      }
+    },
+    {
+      "browserName": "chrome",
+      chromeOptions: {
+        mobileEmulation: {
+          deviceName: 'iPhone X'
+        }
+      }
+    },
+    {
+      "browserName": "chrome",
+      chromeOptions: {
+        mobileEmulation: {
+          deviceName: 'iPad'
+        }
+      }
+    }
+  ],
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function() {}
+    print: function () { }
   },
   onPrepare() {
     require('ts-node').register({
@@ -25,4 +63,5 @@ exports.config = {
     });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   }
+
 };
