@@ -47,6 +47,13 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
+  - provider: heroku
+    skip_cleanup: true
+    api_key:
+      secure: M8wgCt2nOGGrM6PuzxVHxhSd0ITkwcKgof9ymmy9c+fmbi0TwnLc/NbwiB9+Xweh27AmLMx3j38vyTtMi/reP68Qr9RSotmHJcCuvC+vAr0++m+Bo3oHR5uSprS92RegkBaSMQIj24FE1EnGe4xmGdDiKYNzZ53QbqOGAker1zWI+LZ0KIOdjCPS0FlKILT7GWT2DsDChGwNc8Ser5kQr+Og9wr25aQURm7v2tUD+hRg13zoHeHZsgU0kkOyWh40/gztY5FWkgIk852/q+l7Qrljx44vNMRJ3tOMOfAGS+/JzrugMrJhZIWCk/KfE5oA7gk02hFavCSL2sdswaDYO4kWfMIyougJ92+ckbldJgkuwHnjlHvjiUTrwSqOHH1MLuU10ZYshLGFSM/qw1Pio8uoXP4bH/ygl+tNaHfdrW2IXNiP1htgfZ44WKk4d7lYP6mmIyr3iNhTdsrU49OJ7rBVTQov7lnFaFJZGx9qEE1O2bwYK9Hk/8qx/vxnKp1G+ZJVax+GtuSKRs9jjihamcMjB8KxfOvW53Y9qThWWplkOu/3KYa4Fp1D1wIIGO4rtyxKTcPQutXFMbFjIOowTZ0Rx8KJSEAp6TGzQkhTVbBRkR1kVc9PpK1A0XiEcMRwUPzNbtl45UKEepKmhTi7gNFpWNlrgqB2adwdhtbBhlo=
+    app: rupeez
+    on:
+      branch: master
 notifications:
   email:
     recipients:
