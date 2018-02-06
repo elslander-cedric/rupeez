@@ -1,7 +1,12 @@
 {
   "name": "rupeez",
   "version": "1.0.0",
+  "description": "ATM Locator",
   "license": "MIT",
+  "engines": {
+    "node": "8.9.1"
+  },
+  "main": "main.js",
   "scripts": {
     "ng-e2e": "ng e2e",
     "ng-lint": "ng lint",
