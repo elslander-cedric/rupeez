@@ -26,28 +26,31 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - sleep 3
 
+script: npm run $JOB
+
 jobs:
   include:
     - stage: test
-      script: npm run ng:lint
+      env: JOB=ng:lint
 
     - stage: test
-      script: npm run ng:test:report
+      env: JOB=ng:test:report
 
     - stage: test
-      script: npm run node:test:report
+      env: JOB=node:test:report
 
     - stage: test
-      script: npm run ng:e2e
+      env: JOB=ng:e2e
 
     - stage: deploy
-      script: npm run coveralls
-
-    - stage: deploy
+      env: JOB=coveralls
       script:
-        - echo "Generate Docs ..."
-        - npm run ng:doc
-        - echo "Deploying to Github Pages ..."
+        - npm run ng:test:report
+        - npm run node:test:report
+        - npm run coveralls
+        
+    - stage: deploy
+      env: JOB=ng:doc
       deploy:
         provider: pages
         local-dir: documentation
@@ -57,7 +60,8 @@ jobs:
         skip_cleanup: true
 
     - stage: deploy
-      script: echo "Deploying to Heroku ..."
+      env: JOB=deploy heroku  
+      script: skip      
       deploy: 
         provider: heroku
         run:
@@ -72,11 +76,12 @@ jobs:
         skip_cleanup: true
 
     - stage: release
+      env: JOB=gh-release
       script:
         - echo "Deploying to Github Releases ..."
         - npm run ng:build
         - npm run node:build
-        - npm run bundle        
+        - npm run bundle
       deploy:
         provider: releases
         file: rupeez-${TRAVIS_TAG}.tar.gz        
@@ -89,8 +94,7 @@ jobs:
 stages:
   - test
   - deploy 
-  - name: release
-    if: tags = true
+  - release    
 
 notifications:
   email:
