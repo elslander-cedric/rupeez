@@ -21,33 +21,33 @@ cache:
     - $HOME/.npm
     - node_modules
 
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
+
 jobs:
   include:
-    - stage: lint
+    - stage: test
       script: npm run ng:lint
 
-    - stage: unit tests
+    - stage: test
       script: npm run ng:test:report
 
-    - stage: unit tests
+    - stage: test
       script: npm run node:test:report
 
-    - stage: e2e test
-      before_script:
-        - export DISPLAY=:99.0
-        - sh -e /etc/init.d/xvfb start
-        - sleep 3
-      script:
-        - npm run ng:e2e
-
-    - stage: coverage
-      script: npm run coveralls
-
-    - stage: docs
-      script: npm run ng:doc
+    - stage: test
+      script: npm run ng:e2e
 
     - stage: deploy
-      script: echo "Deploying to Github Pages ..."
+      script: npm run coveralls
+
+    - stage: deploy
+      script:
+        - echo "Generate Docs ..."
+        - npm run ng:doc
+        - echo "Deploying to Github Pages ..."
       deploy:
         provider: pages
         local-dir: documentation
@@ -87,11 +87,7 @@ jobs:
         skip_cleanup: true
 
 stages:
-  - lint
-  - unit tests
-  - e2e tests
-  - coverage
-  - docs
+  - test
   - deploy 
   - name: release
     if: tags = true
