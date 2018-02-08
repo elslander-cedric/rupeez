@@ -25,8 +25,10 @@
     "node:build": "tsc -p src/tsconfig.server.json",
     "coveralls": "cat coverage/lcov.info node-coverage/lcov.info | coveralls",
     "start": "nodemon --watch 'src' -e 'ts html css' --exec 'npm run ng:build:prod && npm run node:build && node dist/main.js'",
-    "release": "npm version patch && git push --tags origin master",
-    "bundle": "cd dist && tar -czvf ../rupeez-${TRAVIS_TAG}.tar.gz * && cd .."
+    "postinstall": "npm run ng:build && npm run node:build",
+    "bundle": "cd dist && tar -czvf ../rupeez-${TRAVIS_TAG}.tar.gz * && cd ..",
+    "release": "npm version patch && git push --tags origin master"
+    
   },
   "nyc": {
     "extension": [
