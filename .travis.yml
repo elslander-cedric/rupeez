@@ -1,62 +1,103 @@
 sudo: required
+
 dist: trusty
+
 addons:
   chrome: stable
+
 language: node_js
+
 node_js:
-- node
+  - node
+
 branches:
   only:
   - master
   - gh-pages
   - "/.*/"
+
 cache:
   directories:
   - node_modules
-install:
-- npm install
-before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-- sleep 3
-script:
-- npm run ng-lint
-- npm run ng-e2e
-- npm run ng-test-report
-- npm run node-test-report
-after_success:
-- npm run ng-doc
-- npm run coveralls
-before_deploy:
-- npm run ng-build
-- npm run node-build
-- cd dist
-- tar -czvf ../rupeez-${TRAVIS_TAG}.tar.gz *
-- cd ..
-deploy:
-  - provider: pages
-    skip_cleanup: true
-    local-dir: documentation
-    github_token: $GITHUB_TOKEN
-    on:
-      branch: master
-  - provider: releases
-    api_key:
-      secure: JCYXiUK9xDcQT8tlOXEC2qRmZp3bdLLcTeTS+nIdrgrhvYJ+YTEDT3gHbJ09yJW68Qg2XMkgHubMvBu0ryzuDlqGWO8+iEm4Jc//rnueju4kttDfVyYoIad3JVXXmr3rOmasJZlu9aQDB+bW+4day9JXw127CKmvwsw3Y0dcz1zMUgQHE3E8EpJNUZU+y655SOxK9gx/zE7f2eYqyT0Atr5SW2fkU9TjMHhx3zWYNWSQ4T3dwdhEKDb21495kKVLbVBVIUbY4+3O6aeYPwqZ2fUtyQHGCQSIv7/nbHdOIjhO/A/AuEZpMsQX+qZeTMrQ9BcKjP1wtD8OjPDgPmaWJw0C/rlhNT3vo1Ii9o1/i/nD5cIFk0x4mEQHluu0GQoG0OQSsIpdiskV2gzbBd5r5eYUTkZex+legb9JkI8vE8cDGaBhUwSXMa0EMj8V/Zv/wQHidRKbK3YpsPoMZ5xHUTFxAGy/PcHEv1RgMSrh1D0s8eq4OSOvvZaSTrgOIHesmEdIKPBuKeGT6/6dIRLO7bV8jG2j9wE2OlvlqjfrqiKcGN1nb9kJc0qD8HJXCZK9lJbL39hGFv/19lNooDWlff2qC/4IZ7vltO/WI6FnM0Lse0xuLXz+v+BOdvHRTtHtTgD6/5ouPNZSg1FB556Mu203HIiX01boMG15A9RzRwI=
-    file: rupeez-${TRAVIS_TAG}.tar.gz
-    skip_cleanup: true
-    on:
-      tags: true
-  - provider: heroku
-    skip_cleanup: true
-    api_key:
-      secure: M8wgCt2nOGGrM6PuzxVHxhSd0ITkwcKgof9ymmy9c+fmbi0TwnLc/NbwiB9+Xweh27AmLMx3j38vyTtMi/reP68Qr9RSotmHJcCuvC+vAr0++m+Bo3oHR5uSprS92RegkBaSMQIj24FE1EnGe4xmGdDiKYNzZ53QbqOGAker1zWI+LZ0KIOdjCPS0FlKILT7GWT2DsDChGwNc8Ser5kQr+Og9wr25aQURm7v2tUD+hRg13zoHeHZsgU0kkOyWh40/gztY5FWkgIk852/q+l7Qrljx44vNMRJ3tOMOfAGS+/JzrugMrJhZIWCk/KfE5oA7gk02hFavCSL2sdswaDYO4kWfMIyougJ92+ckbldJgkuwHnjlHvjiUTrwSqOHH1MLuU10ZYshLGFSM/qw1Pio8uoXP4bH/ygl+tNaHfdrW2IXNiP1htgfZ44WKk4d7lYP6mmIyr3iNhTdsrU49OJ7rBVTQov7lnFaFJZGx9qEE1O2bwYK9Hk/8qx/vxnKp1G+ZJVax+GtuSKRs9jjihamcMjB8KxfOvW53Y9qThWWplkOu/3KYa4Fp1D1wIIGO4rtyxKTcPQutXFMbFjIOowTZ0Rx8KJSEAp6TGzQkhTVbBRkR1kVc9PpK1A0XiEcMRwUPzNbtl45UKEepKmhTi7gNFpWNlrgqB2adwdhtbBhlo=
-    app: rupeez
-    on:
-      branch: master
+
+jobs:
+  include:
+    - stage: install
+      script: npm install
+
+    - stage: compile
+      script: npm run ng-lint
+
+    - stage: unit tests
+      script: npm run ng-test
+      script: npm run node-test
+
+    - stage: e2e tests
+      script:
+        - export DISPLAY=:99.0
+        - sh -e /etc/init.d/xvfb start
+        - sleep 3
+        - npm run ng-e2e
+
+    - stage: test report
+      script: npm run ng-test-report
+      script: npm run node-test-report
+
+    - stage: coverage
+      script: npm run coveralls
+
+    - stage: docs
+      script: npm run ng-doc
+
+    - stage: deploy
+      script: echo "Deploying to Github Pages ..."
+      deploy:
+        provider: pages
+        local-dir: documentation
+        github_token: $GITHUB_TOKEN
+        on:
+          branch: master
+
+    - stage: deploy
+      script: echo "Deploying to Heroku ..."
+      deploy: 
+        provider: heroku
+        app: rupeez
+        api_key:
+          secure: M8wgCt2nOGGrM6PuzxVHxhSd0ITkwcKgof9ymmy9c+fmbi0TwnLc/NbwiB9+Xweh27AmLMx3j38vyTtMi/reP68Qr9RSotmHJcCuvC+vAr0++m+Bo3oHR5uSprS92RegkBaSMQIj24FE1EnGe4xmGdDiKYNzZ53QbqOGAker1zWI+LZ0KIOdjCPS0FlKILT7GWT2DsDChGwNc8Ser5kQr+Og9wr25aQURm7v2tUD+hRg13zoHeHZsgU0kkOyWh40/gztY5FWkgIk852/q+l7Qrljx44vNMRJ3tOMOfAGS+/JzrugMrJhZIWCk/KfE5oA7gk02hFavCSL2sdswaDYO4kWfMIyougJ92+ckbldJgkuwHnjlHvjiUTrwSqOHH1MLuU10ZYshLGFSM/qw1Pio8uoXP4bH/ygl+tNaHfdrW2IXNiP1htgfZ44WKk4d7lYP6mmIyr3iNhTdsrU49OJ7rBVTQov7lnFaFJZGx9qEE1O2bwYK9Hk/8qx/vxnKp1G+ZJVax+GtuSKRs9jjihamcMjB8KxfOvW53Y9qThWWplkOu/3KYa4Fp1D1wIIGO4rtyxKTcPQutXFMbFjIOowTZ0Rx8KJSEAp6TGzQkhTVbBRkR1kVc9PpK1A0XiEcMRwUPzNbtl45UKEepKmhTi7gNFpWNlrgqB2adwdhtbBhlo=
+        on:
+          branch: master
+
+    - stage: release
+      script:
+        - echo "Deploying to Github Releases ..."
+        - npm run ng-build
+        - npm run node-build
+        - npm run bundle        
+      deploy:
+        provider: releases
+        file: rupeez-${TRAVIS_TAG}.tar.gz
+        skip_cleanup: true
+        api_key:
+          secure: JCYXiUK9xDcQT8tlOXEC2qRmZp3bdLLcTeTS+nIdrgrhvYJ+YTEDT3gHbJ09yJW68Qg2XMkgHubMvBu0ryzuDlqGWO8+iEm4Jc//rnueju4kttDfVyYoIad3JVXXmr3rOmasJZlu9aQDB+bW+4day9JXw127CKmvwsw3Y0dcz1zMUgQHE3E8EpJNUZU+y655SOxK9gx/zE7f2eYqyT0Atr5SW2fkU9TjMHhx3zWYNWSQ4T3dwdhEKDb21495kKVLbVBVIUbY4+3O6aeYPwqZ2fUtyQHGCQSIv7/nbHdOIjhO/A/AuEZpMsQX+qZeTMrQ9BcKjP1wtD8OjPDgPmaWJw0C/rlhNT3vo1Ii9o1/i/nD5cIFk0x4mEQHluu0GQoG0OQSsIpdiskV2gzbBd5r5eYUTkZex+legb9JkI8vE8cDGaBhUwSXMa0EMj8V/Zv/wQHidRKbK3YpsPoMZ5xHUTFxAGy/PcHEv1RgMSrh1D0s8eq4OSOvvZaSTrgOIHesmEdIKPBuKeGT6/6dIRLO7bV8jG2j9wE2OlvlqjfrqiKcGN1nb9kJc0qD8HJXCZK9lJbL39hGFv/19lNooDWlff2qC/4IZ7vltO/WI6FnM0Lse0xuLXz+v+BOdvHRTtHtTgD6/5ouPNZSg1FB556Mu203HIiX01boMG15A9RzRwI=
+        on:
+          tags: true
+
+stages:
+  - install
+  - compile
+  - unit tests
+  - e2e tests
+  - test report
+  - coverage
+  - docs
+  - deploy 
+  - name: release
+    if: tags = true
+
 notifications:
   email:
     recipients:
-    - cedric.elslander@gmail.com
+      - cedric.elslander@gmail.com
     on_success: never
     on_failure: always
