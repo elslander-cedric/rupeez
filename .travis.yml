@@ -87,7 +87,6 @@ jobs:
         skip_cleanup: true
 
 stages:
-  - install
   - compile
   - unit tests
   - e2e tests
