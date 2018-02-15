@@ -136,7 +136,7 @@ export class Main {
      * Start the server
      */
     public start(): void {
-        this._server = this._app.listen(this._settings.port);
+        this._server = this._app.listen(process.env.PORT || this._settings.port);
         console.log('server listening on port: ', this._settings.port);
     }
 
