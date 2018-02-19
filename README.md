@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.org/elslander-cedric/rupeez.svg?branch=master)](https://travis-ci.org/elslander-cedric/rupeez)
 [![Coverage Status](https://coveralls.io/repos/github/elslander-cedric/rupeez/badge.svg)](https://coveralls.io/github/elslander-cedric/rupeez)
 [![Documentation Coverage Status](https://elslander-cedric.github.io/rupeez/images/coverage-badge.svg)](https://elslander-cedric.github.io/rupeez/coverage)
+[![Demo](https://img.shields.io/badge/demo-link-blue.svg)](https://rupeez.herokuapp.com/locator)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 <p align='center'>
     <img src='https://github.com/elslander-cedric/rupeez/blob/master/src/assets/rupee.gif?raw=true' width='3%'>
@@ -28,6 +30,7 @@ It's an ATM Locator ...
 * [Configuration](#configuration)
 * [Usage](#usage)
 * [Documentation](#documentation)
+* [Demo](#demo)
 * [Limitations](#limitations)
 * [License](#license)
 
@@ -61,6 +64,10 @@ Navigate to `http://[hostname]:[port]]/`
 ## Documentation
 
 See [docs](https://elslander-cedric.github.io/rupeez/)
+
+## Demo
+
+See [demo](https://rupeez.herokuapp.com/locator)
 
 ### Screenshots
 
