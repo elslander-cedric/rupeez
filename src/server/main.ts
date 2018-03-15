@@ -2,6 +2,7 @@ import * as gmaps from '@google/maps';
 import * as express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
+import * as shrinkray from 'shrink-ray';
 
 /**
  * Main class for Express Server
@@ -64,10 +65,19 @@ export class Main {
      */
     public init(): Main {
         return this
+            .setupCompression()
             .addLoggingInterceptor()
             .registerAPIHandlers()
             .setupStaticContent()
             .addDefaultRoutes();
+    }
+
+    /**
+     * Setup Compression (with shrink-ray)
+     */
+    public setupCompression(): Main {
+        this._app.use(shrinkray());
+        return this;
     }
 
     /**
