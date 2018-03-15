@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="theme-color" content="#f27b00"/>
+
   <title>Rupeez</title>
   <base href="/">
 
@@ -11,11 +13,12 @@
   <link rel="manifest" href="manifest.json" />
 
   <!-- TODO: set up key restriction for HTTP referers on https://console.cloud.google.com/apis/credentials -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M&libraries=geometry,places"></script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M&libraries=geometry,places&callback=onGMapsLoaded" async defer></script> -->
 
 </head>
 
 <body>
+  <noscript><p>Please enable JavaScript in your browser settings</p></noscript>
   <rupeez-root></rupeez-root>
 </body>
 

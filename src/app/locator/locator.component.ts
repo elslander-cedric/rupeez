@@ -1,8 +1,17 @@
-import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
 import { } from '@types/googlemaps';
+import { BrowserNativeService } from '@rupeez/browser-native.service';
 
 /**
  * Component that encapsulates a map
@@ -13,7 +22,6 @@ import { } from '@types/googlemaps';
   styleUrls: ['./locator.component.css']
 })
 export class LocatorComponent implements OnInit {
-
   /**
    * Google Map
    */
@@ -37,33 +45,58 @@ export class LocatorComponent implements OnInit {
   /**
    * Reference to the Google Map element
    */
-  @ViewChild('gmap', { read: ElementRef }) gmap: ElementRef;
+  @ViewChild('gmap', { read: ElementRef })
+  gmap: ElementRef;
 
   /**
    * Constructor
    *
-   * @param locationProvider Location Provider
-   * @param el Element Reference
-   * @param renderer Renderer
+   * @param _locationProvider Location Provider
+   * @param _el Element Reference
+   * @param _renderer Renderer
    */
   constructor(
-    @Inject('LocationProvider')
-    private locationProvider: LocationProvider,
-
-    private el: ElementRef,
-    private renderer: Renderer2) { }
+    @Inject('LocationProvider') private locationProvider: LocationProvider,
+    private _el: ElementRef,
+    private _renderer: Renderer2,
+    private _browserNative: BrowserNativeService
+  ) { }
 
   /**
    * Initialize component
    */
   ngOnInit() {
-    this.map = new google.maps.Map(this.gmap.nativeElement, { zoom: 12 });
+    this.loadGoogleMaps();
+  }
 
-    this.locationProvider
-      .currentPosition
-      .subscribe((place: Place) => {
-        this.map.setCenter({ lat: place.latitude, lng: place.longitude });
-      });
+  private loadGoogleMaps(): void {
+    const gmapsKey = 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M'; // TODO: load from config
+    const gmapsCallback = 'onGoogleMapsLoaded';
+    const documentRef = this._browserNative.getNativeDocument();
+    const windowRef = this._browserNative.getNativeWindow();
+
+    windowRef[gmapsCallback] = () => {
+      this.init();
+    };
+
+    const script = documentRef.createElement('script');
+
+    script.type = 'text/javascript';
+    script.async = true;
+    script.defer = true;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${gmapsKey}&libraries=geometry,places&callback=${gmapsCallback}`;
+
+    documentRef.body.appendChild(script);
+  }
+
+  private init(): void {
+    this.map = new google.maps.Map(this.gmap.nativeElement, {
+      zoom: 12
+    });
+
+    this.locationProvider.currentPosition.subscribe((place: Place) => {
+      this.map.setCenter({ lat: place.latitude, lng: place.longitude });
+    });
 
     this.locationProvider
       .getNearby('atm', progress => console.log(`... ${progress}%`))

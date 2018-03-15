@@ -11,6 +11,7 @@ import { LocatorComponent } from '@rupeez/locator/locator.component';
 
 import { environment } from '../environments/environment';
 import { LoggingInterceptor } from './logging-interceptor';
+import { BrowserNativeService } from '@rupeez/browser-native.service';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { LoggingInterceptor } from './logging-interceptor';
     RouterModule
   ],
   providers: [
+    BrowserNativeService,
     {
       provide: 'LocationProvider',
       useClass: environment.location ? LocatorService : LocatorMockService
