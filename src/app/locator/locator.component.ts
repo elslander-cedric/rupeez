@@ -1,17 +1,9 @@
-import {
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  Renderer2,
-  ViewChild,
-  AfterViewInit
-} from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { BrowserNativeService } from '@rupeez/browser-native.service';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
 import { } from '@types/googlemaps';
-import { BrowserNativeService } from '@rupeez/browser-native.service';
 
 /**
  * Component that encapsulates a map
@@ -22,6 +14,7 @@ import { BrowserNativeService } from '@rupeez/browser-native.service';
   styleUrls: ['./locator.component.css']
 })
 export class LocatorComponent implements OnInit {
+
   /**
    * Google Map
    */
@@ -60,35 +53,54 @@ export class LocatorComponent implements OnInit {
     private _el: ElementRef,
     private _renderer: Renderer2,
     private _browserNative: BrowserNativeService
-  ) { }
+  ) {}
 
   /**
    * Initialize component
    */
   ngOnInit() {
-    this.loadGoogleMaps();
+    this.loadGoogleMaps()
+      .then(() => this.init())
+      .catch(err => console.error(err));
   }
 
-  private loadGoogleMaps(): void {
-    const gmapsKey = 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M'; // TODO: load from config
-    const gmapsCallback = 'onGoogleMapsLoaded';
+  /**
+   * This will load the Google Maps API script (if necessary)
+   */
+  private loadGoogleMaps(): Promise<any> {
     const documentRef = this._browserNative.getNativeDocument();
     const windowRef = this._browserNative.getNativeWindow();
 
-    windowRef[gmapsCallback] = () => {
-      this.init();
-    };
+    const gmapsKey = 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M'; // TODO: load from config
+    const gmapsCallback = 'onGoogleMapsLoaded';
 
-    const script = documentRef.createElement('script');
+    return new Promise((resolve) => {
+      if (documentRef.getElementById('gmaps') === undefined) {
+        windowRef[gmapsCallback] = resolve;
 
-    script.type = 'text/javascript';
-    script.async = true;
-    script.defer = true;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${gmapsKey}&libraries=geometry,places&callback=${gmapsCallback}`;
+        const gmapsScript: HTMLScriptElement = documentRef.createElement('script');
 
-    documentRef.body.appendChild(script);
+        Object.assign(gmapsScript, {
+          id: 'gmaps',
+          type: 'text/javascript',
+          async: true,
+          defer: true,
+          src: `https://maps.googleapis.com/maps/api/js?
+                key=${gmapsKey}&
+                libraries=geometry,places&
+                callback=${gmapsCallback}`
+        });
+
+        documentRef.body.appendChild(gmapsScript);
+      } else {
+        resolve();
+      }
+    });
   }
 
+  /**
+   * Initialialize map
+   */
   private init(): void {
     this.map = new google.maps.Map(this.gmap.nativeElement, {
       zoom: 12

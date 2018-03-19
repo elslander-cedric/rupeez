@@ -30,6 +30,11 @@ module.exports = function (config) {
     browsers: ['Chrome'],
     singleRun: false,
     files: ['http://maps.googleapis.com/maps/api/js?sensor=false&language=en'],
-    crossOriginAttribute: false
+    crossOriginAttribute: false,
+    browserConsoleLogOptions: {
+      level: 'debug',
+      format: '%b %T: %m',
+      terminal: true
+    },
   });
 };

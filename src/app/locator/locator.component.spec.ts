@@ -4,6 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocatorMockService } from '@rupeez/locator-mock.service';
 
 import { LocatorComponent } from './locator.component';
+import { BrowserNativeService } from '../browser-native.service';
 
 describe('LocatorComponent', () => {
   let component: LocatorComponent;
@@ -15,20 +16,26 @@ describe('LocatorComponent', () => {
     });
   });
 
+  beforeEach(function() {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
         HttpClientTestingModule],
       declarations: [LocatorComponent],
-      providers: [{
+      providers: [
+        BrowserNativeService,
+      {
         provide: 'LocationProvider',
         useClass: LocatorMockService
       }]
     }).compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async() => {
     fixture = TestBed.createComponent(LocatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -39,8 +46,8 @@ describe('LocatorComponent', () => {
   });
 
   it('map should be centered on current position', () => {
-    expect(component.map.getCenter().lat()).toEqual(51.054342);
-    expect(component.map.getCenter().lng()).toEqual(3.7174239999999372);
+      expect(component.map.getCenter().lat()).toEqual(51.054342);
+      expect(component.map.getCenter().lng()).toEqual(3.7174239999999372);
   });
 
   it('map should contain markers of atms nearby', () => {
