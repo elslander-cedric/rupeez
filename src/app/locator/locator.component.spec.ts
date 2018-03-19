@@ -4,7 +4,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocatorMockService } from '@rupeez/locator-mock.service';
 
 import { LocatorComponent } from './locator.component';
-import { BrowserNativeService } from '../browser-native.service';
+import { GoogleMapsService } from '@rupeez/google-maps.service';
+import { BrowserNativeService } from '@rupeez/browser-native.service';
 
 describe('LocatorComponent', () => {
   let component: LocatorComponent;
@@ -27,6 +28,7 @@ describe('LocatorComponent', () => {
         HttpClientTestingModule],
       declarations: [LocatorComponent],
       providers: [
+        GoogleMapsService,
         BrowserNativeService,
       {
         provide: 'LocationProvider',

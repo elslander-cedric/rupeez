@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { BrowserNativeService } from '@rupeez/browser-native.service';
+import { GoogleMapsService } from '@rupeez/google-maps.service';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
@@ -52,50 +52,16 @@ export class LocatorComponent implements OnInit {
     @Inject('LocationProvider') private locationProvider: LocationProvider,
     private _el: ElementRef,
     private _renderer: Renderer2,
-    private _browserNative: BrowserNativeService
+    private _gmaps: GoogleMapsService
   ) {}
 
   /**
    * Initialize component
    */
   ngOnInit() {
-    this.loadGoogleMaps()
+    this._gmaps.load()
       .then(() => this.init())
       .catch(err => console.error(err));
-  }
-
-  /**
-   * This will load the Google Maps API script (if necessary)
-   */
-  private loadGoogleMaps(): Promise<any> {
-    const documentRef = this._browserNative.getNativeDocument();
-    const windowRef = this._browserNative.getNativeWindow();
-
-    const gmapsKey = 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M'; // TODO: load from config
-    const gmapsCallback = 'onGoogleMapsLoaded';
-
-    return new Promise((resolve) => {
-      if (!documentRef.getElementById('gmaps')) {
-        windowRef[gmapsCallback] = resolve;
-
-        const gmapsScript: HTMLScriptElement = documentRef.createElement('script');
-
-        Object.assign(gmapsScript, {
-          id: 'gmaps',
-          type: 'text/javascript',
-          async: true,
-          defer: true,
-          src: 'https://maps.googleapis.com/maps/api/js?' +
-               `key=${gmapsKey}&` +
-               `libraries=geometry,places&` +
-               `callback=${gmapsCallback}`
-        });
-
-        documentRef.body.appendChild(gmapsScript);
-      } else {
-        resolve();
-      }
-    });
   }
 
   /**

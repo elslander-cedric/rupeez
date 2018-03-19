@@ -12,6 +12,7 @@ import { LocatorComponent } from '@rupeez/locator/locator.component';
 import { environment } from '../environments/environment';
 import { LoggingInterceptor } from './logging-interceptor';
 import { BrowserNativeService } from '@rupeez/browser-native.service';
+import { GoogleMapsService } from '@rupeez/google-maps.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BrowserNativeService } from '@rupeez/browser-native.service';
     RouterModule
   ],
   providers: [
+    GoogleMapsService,
     BrowserNativeService,
     {
       provide: 'LocationProvider',
