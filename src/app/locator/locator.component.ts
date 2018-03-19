@@ -3,7 +3,7 @@ import { BrowserNativeService } from '@rupeez/browser-native.service';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
 import { Observable } from 'rxjs/Observable';
-import { } from '@types/googlemaps';
+import {} from '@types/googlemaps';
 
 /**
  * Component that encapsulates a map
@@ -75,7 +75,7 @@ export class LocatorComponent implements OnInit {
     const gmapsCallback = 'onGoogleMapsLoaded';
 
     return new Promise((resolve) => {
-      if (documentRef.getElementById('gmaps') === undefined) {
+      if (!documentRef.getElementById('gmaps')) {
         windowRef[gmapsCallback] = resolve;
 
         const gmapsScript: HTMLScriptElement = documentRef.createElement('script');
@@ -85,10 +85,10 @@ export class LocatorComponent implements OnInit {
           type: 'text/javascript',
           async: true,
           defer: true,
-          src: `https://maps.googleapis.com/maps/api/js?
-                key=${gmapsKey}&
-                libraries=geometry,places&
-                callback=${gmapsCallback}`
+          src: 'https://maps.googleapis.com/maps/api/js?' +
+               `key=${gmapsKey}&` +
+               `libraries=geometry,places&` +
+               `callback=${gmapsCallback}`
         });
 
         documentRef.body.appendChild(gmapsScript);
