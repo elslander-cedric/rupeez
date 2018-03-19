@@ -69,8 +69,8 @@ export class Main {
             .addLoggingInterceptor()
             .registerAPIHandlers()
             .setupStaticContent()
-            .addDefaultRoutes()
-            .enforceHttps();
+            .enforceHttps()
+            .addDefaultRoutes();
     }
 
     /**
