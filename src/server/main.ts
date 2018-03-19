@@ -69,7 +69,8 @@ export class Main {
             .addLoggingInterceptor()
             .registerAPIHandlers()
             .setupStaticContent()
-            .addDefaultRoutes();
+            .addDefaultRoutes()
+            .enforceHttps();
     }
 
     /**
@@ -137,6 +138,20 @@ export class Main {
                     response.sendStatus(500);
                 }
             });
+        });
+
+        return this;
+    }
+
+    /**
+     * Ridirects all HTTP traffic to HTTPS
+     */
+    public enforceHttps(): Main {
+        this._app.use(function (req, res, next) {
+            if (!req.secure) {
+                return res.redirect(['https://', req.get('Host'), req.url].join(''));
+            }
+            next();
         });
 
         return this;
