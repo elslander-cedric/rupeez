@@ -65,8 +65,9 @@ jobs:
       deploy: 
         provider: heroku
         run:
-          - npm run ng:build
-          - npm run node:build
+          - "npm run ng:build"
+          - "npm run node:build"
+          - "script/heroku-post-install.sh"
           - restart
         app: rupeez
         api_key:
