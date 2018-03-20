@@ -65,11 +65,11 @@ export class Main {
      */
     public init(): Main {
         return this
+            .enforceHttps()
             .setupCompression()
             .addLoggingInterceptor()
             .registerAPIHandlers()
-            .setupStaticContent()
-            .enforceHttps()
+            .setupStaticContent()            
             .addDefaultRoutes();
     }
 
@@ -147,8 +147,8 @@ export class Main {
      * Ridirects all HTTP traffic to HTTPS
      */
     public enforceHttps(): Main {
-        this._app.use(function (req, res, next) {
-            if (!req.secure) {
+        this._app.use((req, res, next) => {
+            if (this._settings.https && !req.secure) {
                 return res.redirect(['https://', req.get('Host'), req.url].join(''));
             }
             next();

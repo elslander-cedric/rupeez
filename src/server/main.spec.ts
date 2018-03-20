@@ -11,7 +11,8 @@ describe('main', () => {
     before(() => {
         main = new Main({
             port: 9876,
-            googleMapsAPIKey: 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M'
+            googleMapsAPIKey: 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M',
+            https: false
         });
         main.init();
     });
@@ -113,6 +114,41 @@ describe('main', () => {
     });
 });
 
+describe('main https', () => {
+    let main;
+
+    before(() => {
+        main = new Main({
+            port: 9876,
+            googleMapsAPIKey: 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M',
+            https: true
+        });
+        main.init();
+    });
+
+    beforeEach(() => {
+        main.start();
+    });
+
+    afterEach(() => {
+        main.stop();
+    });
+
+    it('should redirect to https', (done) => {
+        const request = http.request({
+            hostname: 'localhost',
+            //path: '/',
+            method: 'GET',
+            port: main.settings.port
+        } as http.RequestOptions, (response: http.IncomingMessage) => {
+            expect(Math.floor(response.statusCode / 100)).to.equal(3); // redirection
+            expect(response.headers['location']).to.contain('https');
+            done();
+        });
+
+        request.end();
+    });
+});
 
 describe('main fs', () => {
     let main;
