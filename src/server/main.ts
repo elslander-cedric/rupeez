@@ -69,7 +69,7 @@ export class Main {
             .setupCompression()
             .addLoggingInterceptor()
             .registerAPIHandlers()
-            .setupStaticContent()            
+            .setupStaticContent()
             .addDefaultRoutes();
     }
 
