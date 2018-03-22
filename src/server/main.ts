@@ -65,11 +65,11 @@ export class Main {
      */
     public init(): Main {
         return this
+            .addLoggingInterceptor()
             .enforceHttps()
             .setupCompression()
-            .addLoggingInterceptor()
-            .registerAPIHandlers()
-            .setupStaticContent()
+            .setupStaticContent()                
+            .registerAPIHandlers()            
             .addDefaultRoutes();
     }
 
@@ -85,8 +85,8 @@ export class Main {
      * Add Logging Interceptor
      */
     public addLoggingInterceptor(): Main {
-        this._app.use((req, res, next) => {
-            console.log(`[${req.method}] - [${req.path}]`);
+        this._app.use((request: Request, response: Response, next: NextFunction) => {
+            console.log(`[${request.method}] (${request.protocol}) > ${request.path} (${response.statusCode})`);
             next();
         });
 
@@ -98,8 +98,11 @@ export class Main {
      */
     public addDefaultRoutes(): Main {
         // redirect to root
-        // app.use('**', (req,res) => res.redirect('/'));
-        this._app.use('**', (req, res) => res.sendFile(__dirname + '/index.html'));
+        // app.use('**', (req,res) => res.redirect('/'));        
+        this._app.use('**', (request: Request, response: Response, next: NextFunction) => {
+            response.sendFile(__dirname + '/index.html');
+            console.log(`sending index file`);
+        });
 
         return this;
     }
@@ -137,7 +140,7 @@ export class Main {
                     response.statusMessage = err;
                     response.sendStatus(500);
                 }
-            });
+            });            
         });
 
         return this;
@@ -147,11 +150,11 @@ export class Main {
      * Ridirects all HTTP traffic to HTTPS
      */
     public enforceHttps(): Main {
-        this._app.use((req, res, next) => {
-            if (this._settings.https && !req.secure) {
-                return res.redirect(['https://', req.get('Host'), req.url].join(''));
+        this._app.use((request: Request, response: Response, next: NextFunction) => {
+            if (this._settings.https && !request.secure) {
+                response.redirect(['https://', request.get('Host'), request.url].join(''));
+                console.log(`redirect to https`);
             }
-            next();
         });
 
         return this;

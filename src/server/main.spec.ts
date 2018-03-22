@@ -117,7 +117,7 @@ describe('main', () => {
 describe('main https', () => {
     let main;
 
-    before(() => {
+    before(() => {   
         main = new Main({
             port: 9876,
             googleMapsAPIKey: 'AIzaSyATJnu9FYOi3-s2QZqmKne3LS_ECbUzc-M',
@@ -136,8 +136,7 @@ describe('main https', () => {
 
     it('should redirect to https', (done) => {
         const request = http.request({
-            hostname: 'localhost',
-            //path: '/',
+            hostname: 'localhost',            
             method: 'GET',
             port: main.settings.port
         } as http.RequestOptions, (response: http.IncomingMessage) => {
