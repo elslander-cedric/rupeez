@@ -151,7 +151,9 @@ export class Main {
      */
     public enforceHttps(): Main {
         this._app.use((request: Request, response: Response, next: NextFunction) => {
-            if (this._settings.https && !request.secure) {
+            const secure = request.secure || request.headers['x-forwarded-proto'] === 'https';
+
+            if (this._settings.https && !secure) {
                 response.redirect(['https://', request.get('Host'), request.url].join(''));
                 console.log(`redirect to https`);
             } else {
