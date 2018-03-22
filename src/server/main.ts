@@ -68,8 +68,8 @@ export class Main {
             .addLoggingInterceptor()
             .enforceHttps()
             .setupCompression()
-            .setupStaticContent()                
-            .registerAPIHandlers()            
+            .setupStaticContent()
+            .registerAPIHandlers()
             .addDefaultRoutes();
     }
 
@@ -98,7 +98,7 @@ export class Main {
      */
     public addDefaultRoutes(): Main {
         // redirect to root
-        // app.use('**', (req,res) => res.redirect('/'));        
+        // app.use('**', (req,res) => res.redirect('/'));
         this._app.use('**', (request: Request, response: Response, next: NextFunction) => {
             response.sendFile(__dirname + '/index.html');
             console.log(`sending index file`);
@@ -140,7 +140,7 @@ export class Main {
                     response.statusMessage = err;
                     response.sendStatus(500);
                 }
-            });            
+            });
         });
 
         return this;
@@ -154,6 +154,8 @@ export class Main {
             if (this._settings.https && !request.secure) {
                 response.redirect(['https://', request.get('Host'), request.url].join(''));
                 console.log(`redirect to https`);
+            } else {
+                next();
             }
         });
 
