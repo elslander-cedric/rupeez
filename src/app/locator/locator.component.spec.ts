@@ -6,10 +6,32 @@ import { LocatorMockService } from '@rupeez/locator-mock.service';
 import { LocatorComponent } from './locator.component';
 import { GoogleMapsService } from '@rupeez/google-maps.service';
 import { BrowserNativeService } from '@rupeez/browser-native.service';
+import { GoogleMapsMockService } from '@rupeez/google-maps-mock.service';
 
 describe('LocatorComponent', () => {
   let component: LocatorComponent;
   let fixture: ComponentFixture<LocatorComponent>;
+
+  beforeAll(() => {
+    spyOn(google.maps, 'Map').and.returnValue((() => {
+      let lat = 51.054342;
+      let lng = 3.717424;
+
+      return {
+        getCenter: () =>  {
+          return {
+            lat: () => lat,
+            lng: () => lng
+          };
+        },
+        setCenter: (position) => {
+          lat = position.lat;
+          lng = position.lng;
+        },
+        setZoom: () => {}
+      };
+    })());
+  });
 
   beforeAll(() => {
     spyOn(navigator.geolocation, 'watchPosition').and.callFake((...args) => {
@@ -28,20 +50,24 @@ describe('LocatorComponent', () => {
         HttpClientTestingModule],
       declarations: [LocatorComponent],
       providers: [
-        GoogleMapsService,
+        {
+          provide: 'GoogleMapsService',
+          useClass: GoogleMapsMockService
+        },
         BrowserNativeService,
-      {
-        provide: 'LocationProvider',
-        useClass: LocatorMockService
-      }]
+        {
+          provide: 'LocationProvider',
+          useClass: LocatorMockService
+        }
+      ]
     }).compileComponents();
   }));
 
-  beforeEach(async() => {
+  beforeEach(async(() => {
     fixture = TestBed.createComponent(LocatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -49,7 +75,7 @@ describe('LocatorComponent', () => {
 
   it('map should be centered on current position', () => {
       expect(component.map.getCenter().lat()).toEqual(51.054342);
-      expect(component.map.getCenter().lng()).toEqual(3.7174239999999372);
+      expect(component.map.getCenter().lng()).toEqual(3.717424);
   });
 
   it('map should contain markers of atms nearby', () => {
@@ -58,6 +84,9 @@ describe('LocatorComponent', () => {
 
   it('map should be centered when marker is clicked', () => {
     google.maps.event.trigger(component.markers[0], 'click');
-    expect(component.map.getCenter()).toBe(component.markers[0].getPosition());
+    expect(component.map.getCenter().lat())
+      .toBe(component.markers[0].getPosition().lat());
+    expect(component.map.getCenter().lng())
+      .toBe(component.markers[0].getPosition().lng());
   });
 });

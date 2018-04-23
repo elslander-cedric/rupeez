@@ -50,9 +50,9 @@ export class LocatorComponent implements OnInit {
    */
   constructor(
     @Inject('LocationProvider') private locationProvider: LocationProvider,
+    @Inject('GoogleMapsService') private _gmaps: GoogleMapsService,
     private _el: ElementRef,
-    private _renderer: Renderer2,
-    private _gmaps: GoogleMapsService
+    private _renderer: Renderer2
   ) {}
 
   /**
@@ -85,9 +85,14 @@ export class LocatorComponent implements OnInit {
             map: this.map
           });
 
-          marker.addListener('click', function () {
+          marker.addListener('click', () => {
             this.map.setZoom(14);
-            this.map.setCenter(this.getPosition());
+
+            const position = marker.getPosition();
+            this.map.setCenter({
+              lat: position.lat(),
+              lng: position.lng()
+            });
           });
 
           this.markers.push(marker);

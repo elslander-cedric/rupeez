@@ -18,7 +18,9 @@ export class GoogleMapsService {
 
     return new Promise((resolve) => {
       if (!documentRef.getElementById('gmaps')) {
-        windowRef[gmapsCallback] = resolve;
+        windowRef[gmapsCallback] = () => {
+          resolve(true);
+        };
 
         const gmapsScript: HTMLScriptElement = documentRef.createElement('script');
 
@@ -35,7 +37,7 @@ export class GoogleMapsService {
 
         documentRef.body.appendChild(gmapsScript);
       } else {
-        resolve();
+        resolve(false);
       }
     });
   }
