@@ -26,26 +26,26 @@ script: $JOB
 jobs:
   include:
     - stage: test
-      env: JOB=npm run ng:lint
+      env: JOB="npm run ng:lint"
 
     - stage: test
-      env: JOB=xvfb-run npm run ng:test:report
+      env: JOB="xvfb-run npm run ng:test:report"
 
     - stage: test
-      env: JOB=npm run node:test:report
+      env: JOB="npm run node:test:report"
 
     - stage: test
-      env: JOB=xvfb-run npm run ng:e2e
+      env: JOB="xvfb-run npm run ng:e2e"
 
     - stage: deploy
-      env: JOB=npm run coveralls
+      env: JOB="npm run coveralls"
       script:
         - npm run ng:test:report
         - npm run node:test:report
         - npm run coveralls
         
     - stage: deploy
-      env: JOB=npm run ng:doc
+      env: JOB="npm run ng:doc"
       deploy:
         provider: pages
         local-dir: documentation
@@ -55,7 +55,7 @@ jobs:
         skip_cleanup: true
 
     - stage: deploy
-      env: JOB=npm run deploy heroku  
+      env: JOB="npm run deploy heroku" 
       script: skip      
       deploy: 
         provider: heroku
@@ -67,7 +67,7 @@ jobs:
         skip_cleanup: true
 
     - stage: release
-      env: JOB=npm run gh-release
+      env: JOB="npm run gh-release"
       script:
         - echo "Deploying to Github Releases ..."
         - npm run ng:build
