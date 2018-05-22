@@ -8,9 +8,7 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html"
-        ],
-        "versionedFiles": [
+          "/index.html",
           "/*.bundle.css",
           "/*.bundle.js",
           "/*.chunk.js"

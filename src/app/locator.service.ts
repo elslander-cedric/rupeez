@@ -2,8 +2,7 @@ import { HttpClient, HttpEventType, HttpRequest, HttpResponse } from '@angular/c
 import { Injectable } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer } from 'rxjs';
 import { map, switchMap, tap, filter } from 'rxjs/operators';
 
 /**

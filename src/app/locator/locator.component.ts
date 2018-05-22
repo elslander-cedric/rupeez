@@ -2,8 +2,10 @@ import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@an
 import { GoogleMapsService } from '@rupeez/google-maps.service';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {} from '@types/googlemaps';
+
+declare var google: any;
 
 /**
  * Component that encapsulates a map
@@ -49,7 +51,7 @@ export class LocatorComponent implements OnInit {
    * @param _renderer Renderer
    */
   constructor(
-    @Inject('LocationProvider') private locationProvider: LocationProvider,
+    @Inject('LocationProvider') private _locationProvider: LocationProvider,
     @Inject('GoogleMapsService') private _gmaps: GoogleMapsService,
     private _el: ElementRef,
     private _renderer: Renderer2
@@ -72,11 +74,11 @@ export class LocatorComponent implements OnInit {
       zoom: 12
     });
 
-    this.locationProvider.currentPosition.subscribe((place: Place) => {
+    this._locationProvider.currentPosition.subscribe((place: Place) => {
       this.map.setCenter({ lat: place.latitude, lng: place.longitude });
     });
 
-    this.locationProvider
+    this._locationProvider
       .getNearby('atm', progress => console.log(`... ${progress}%`))
       .subscribe((places: Array<Place>) =>
         places.map((place: Place) => {

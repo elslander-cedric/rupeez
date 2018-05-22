@@ -21,6 +21,8 @@ describe('GoogleMapsService', () => {
       (gmapsService: GoogleMapsService, browserNativeService: BrowserNativeService) => {
         const documentRef = browserNativeService.getNativeDocument();
 
+        expect(documentRef).toBeTruthy();
+
         gmapsService.load().then((loaded: boolean) => {
           const gmapsEl = documentRef.getElementById('gmaps');
           expect(gmapsEl).toBeTruthy();

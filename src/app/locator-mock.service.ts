@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocationProvider } from '@rupeez/location-provider';
 import { Place } from '@rupeez/place';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, of } from 'rxjs';
 
 /**
  * Service that mocks location data (not the current position)

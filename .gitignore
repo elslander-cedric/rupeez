@@ -6,6 +6,9 @@
 /tmp
 /out-tsc
 /documentation
+/src/server/node-coverage
+/node-coverage
+/coverage
 
 # dependencies
 /node_modules
@@ -29,8 +32,6 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
-/node-coverage
 /libpeerconnection.log
 npm-debug.log
 testem.log

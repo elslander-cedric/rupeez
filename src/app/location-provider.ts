@@ -1,5 +1,5 @@
 import { Place } from '@rupeez/place';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 /**
  * Provider for Location

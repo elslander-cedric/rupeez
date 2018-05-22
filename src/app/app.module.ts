@@ -27,7 +27,10 @@ import { GoogleMapsService } from '@rupeez/google-maps.service';
     RouterModule
   ],
   providers: [
-    GoogleMapsService,
+    {
+      provide: 'GoogleMapsService',
+      useClass: GoogleMapsService
+    },
     BrowserNativeService,
     {
       provide: 'LocationProvider',
