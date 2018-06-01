@@ -67,6 +67,7 @@
     "@types/googlemaps": "^3.30.8",
     "ajv": "^6.5.0",
     "core-js": "^2.5.6",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "rxjs": "^6.1.0",
     "shrink-ray": "^0.1.3",

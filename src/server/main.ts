@@ -3,6 +3,7 @@ import * as express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 import * as shrinkray from 'shrink-ray';
+import * as cors from "cors";
 
 /**
  * Main class for Express Server
@@ -68,6 +69,7 @@ export class Main {
             .addLoggingInterceptor()
             .enforceHttps()
             .setupCompression()
+            .allowCors()
             .setupStaticContent()
             .registerAPIHandlers()
             .addDefaultRoutes();
@@ -81,6 +83,13 @@ export class Main {
         return this;
     }
 
+    /**
+     * Allows CORS (All Requests)
+     */
+    public allowCors(): Main {
+        this._app.use(cors());
+        return this;
+    }
     /**
      * Add Logging Interceptor
      */
