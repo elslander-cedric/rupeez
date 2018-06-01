@@ -40,7 +40,7 @@ jobs:
     - stage: deploy
       env: JOB="npm run coveralls"
       script:
-        - npm run ng:test:report
+        - xvfb-run npm run ng:test:report
         - npm run node:test:report
         - npm run coveralls
         
