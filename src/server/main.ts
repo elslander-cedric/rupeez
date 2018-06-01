@@ -3,7 +3,7 @@ import * as express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import * as fs from 'fs';
 import * as shrinkray from 'shrink-ray';
-import * as cors from "cors";
+import * as cors from 'cors';
 
 /**
  * Main class for Express Server
